@@ -10,8 +10,8 @@ import matplotlib.image as mpimg
 import os
 from keras.preprocessing.image import ImageDataGenerator
 from keras.models import Sequential
-from keras.layers import Convolution2D, MaxPooling2D, Reshape
-from keras.layers import Activation, Dropout, Flatten, Dense
+from keras.layers import Dense, Dropout, Flatten, Activation
+from keras.layers import Conv2D, MaxPooling2D
 import keras
 import PIL
 
@@ -29,12 +29,10 @@ Different parameters that allow to change variables of the whole network.
 
 """
 
-BATCH_SIZE_TRAIN = 1000
-NUM_EPOCHS = 200
+BATCH_SIZE_TRAIN = 2000
+NUM_EPOCHS = 3
 IMAGE_HEIGHT =29
 IMAGE_WIDTH = 29
-IMAGE_WIDTH_ORIGINAL = 1024
-IMAGE_HEIGHT_ORIGINAL = 696
 dimension_first_conv = 16
 dimension_second_conv = 32
 dimension_fc = 64
@@ -58,8 +56,8 @@ nb_validation_samples = 18 + 21 + 42
 nb_test_samples = 19 + 21 + 43
 
 '''Options for performing training, restore a model or test'''
-restore = False
-train = True
+restore = True
+train = False
 test = True
 
 '''
@@ -85,17 +83,17 @@ def model():
 
     print("creating first layer")
     model = Sequential()
-    model.add(Convolution2D(dimension_first_conv, 10, 10, input_shape=(None, None,3)))
+    model.add(Conv2D(dimension_first_conv,(10, 10), input_shape=(166, 256,3)))
     model.add(Activation('relu'))
     model.add(MaxPooling2D(pool_size=(2, 2)))
 
     print("creating second layer")
-    model.add(Convolution2D(dimension_second_conv, 10, 10))
+    model.add(Conv2D(dimension_second_conv,(10, 10)))
     model.add(Activation('relu'))
     model.add(MaxPooling2D(pool_size=(2, 2)))
 
     print("creating third layer")
-    model.add(Convolution2D(dimension_fc, 5, 5))
+    model.add(Conv2D(dimension_fc, (5, 5)))
     model.add(Activation('relu'))
     model.add(MaxPooling2D(pool_size=(2, 2)))
 
@@ -139,24 +137,24 @@ test_datagen = ImageDataGenerator(rescale=1./255)
 
 train_generator = train_datagen.flow_from_directory(
         train_data_dir,
-        target_size=(IMAGE_WIDTH, IMAGE_HEIGHT),
+        target_size=(166, 256),
         batch_size=32,
         class_mode='binary')
 
 validation_generator = test_datagen.flow_from_directory(
         validation_data_dir,
-        target_size=(IMAGE_WIDTH, IMAGE_HEIGHT),
+        target_size=(166, 256),
         batch_size=18,
         class_mode='binary')
 
 test_generator = test_datagen.flow_from_directory(
         test_data_dir,
-        target_size=(IMAGE_WIDTH, IMAGE_HEIGHT),
+        target_size=(166, 256),
         batch_size=18,
         class_mode='binary')
 
 '''
-Restoring the wights, the name could be changed depending the name of out file, but they are saved as weights.h5
+Restoring the weights, the name could be changed depending the name of out file, but they are saved as weights.h5
 '''
 #creating the model
 model = model()
@@ -170,10 +168,11 @@ if(train == True):
     history = model.fit_generator(
             train_generator,
             samples_per_epoch=BATCH_SIZE_TRAIN,
-            callbacks=[earlyStopping],
-            nb_epoch=NUM_EPOCHS,
+            #callbacks=[earlyStopping],
+            epochs=NUM_EPOCHS,
+            steps_per_epoch=1,
             validation_data=validation_generator,
-            nb_val_samples=nb_validation_samples)
+            validation_steps=nb_validation_samples)
 
     print("Saving the weights")
     model.save_weights('weights.h5')  # always save your weights after training or during training
@@ -196,5 +195,6 @@ if(train == True):
     plt.show()
 
 if(test == True):
-    test_loss = model.evaluate_generator(test_generator,val_samples = nb_test_samples)
+    print("Evaluating in test data...")
+    test_loss = model.evaluate_generator(test_generator,steps = nb_test_samples)
     print("Loss and accuracy in the test set: Loss %g, Accuracy %g"%(test_loss[0],test_loss[1]))
