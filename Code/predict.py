@@ -14,7 +14,7 @@ from keras.layers import Dense, Dropout, Flatten, Activation
 from keras.layers import Conv2D, MaxPooling2D
 import keras
 import PIL
-
+from model import create_model
 """
 Different parameters that allow to change variables of the whole network.
 
@@ -52,56 +52,6 @@ nb_test_samples = 19 + 21 + 43
 '''Options for performing training, restore a model or test'''
 restore = True
 
-'''
-Creation of the architecture for the CNN.
-
-- One convolutional layer
-- Activation ReLU.
-- Max Pooling (2,2)
-- One convolutional layer
-- Activation ReLU
-- Max Pooling (2,2)
-- One convolutional layer
-- Activation Relu
-- Max Pooling (2,2)
-- Fully conected layer
-- Dropout layer
-- Output layer
-- Activation sigmoid
-
-'''
-def model():
-    print("Creating the model")
-
-    print("creating first layer")
-    model = Sequential()
-    model.add(Conv2D(dimension_first_conv,(10, 10), input_shape=(166, 256,3)))
-    model.add(Activation('relu'))
-    model.add(MaxPooling2D(pool_size=(2, 2)))
-
-    print("creating second layer")
-    model.add(Conv2D(dimension_second_conv,(10, 10)))
-    model.add(Activation('relu'))
-    model.add(MaxPooling2D(pool_size=(2, 2)))
-
-    print("creating third layer")
-    model.add(Conv2D(dimension_fc, (5, 5)))
-    model.add(Activation('relu'))
-    model.add(MaxPooling2D(pool_size=(2, 2)))
-
-    print("creating output layer")
-    model.add(Flatten())
-    model.add(Dense(dimension_fc))
-    model.add(Activation('relu'))
-    model.add(Dropout(0.6))
-    model.add(Dense(1))
-    model.add(Activation('sigmoid'))
-
-    model.compile(loss='binary_crossentropy',
-                  optimizer='Adam',
-                  metrics=['accuracy'])
-    return model
-
 if __name__ == '__main__':
 
 	parser = argparse.ArgumentParser(description="Test the neural network that ")
@@ -126,7 +76,7 @@ if __name__ == '__main__':
     but they are saved as weights.h5
     '''
     #creating the model
-    model = model()
+    model = create_model()
     model.load_weights('weights.h5')
     print("augmentation configuration for testing")
     # this is the augmentation configuration we will use for testing:
