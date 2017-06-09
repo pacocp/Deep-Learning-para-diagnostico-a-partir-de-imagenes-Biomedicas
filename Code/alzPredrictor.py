@@ -46,7 +46,9 @@ class MainWindow():
         """ You can change the place of the images giving
         different values to the screen_width and screen_height """
         self.image_on_canvas = self.canvas.create_image((screen_width/2)-100, (screen_height/2)-200, anchor = NW, image = self.image)
-        self.texto = self.canvas.create_text((screen_width)-(screen_width/2),50,font=("Purisa", 16),text = filename)
+        self.texto = self.canvas.create_text((screen_width)-(screen_width/2),50,font=("Purisa", 16),text = self.filename)
+        self.prediction_text = self.canvas.create_text((screen_width)-(screen_width/2),(screen_height/2)-300,font=("Purisa", 16),
+        text = "Predicted label is: "+self.prediction)
 
          # button to close
         self.button_close = Button(main, text="Close", command=self.closeButton)
@@ -97,6 +99,7 @@ class MainWindow():
         return "break"
 
 """ MAIN PROGRAM """
+root = Tk()
 root = Toplevel()
 filename = fd.askopenfilename(parent=root) # show an "Open" dialog box and return the path to the selected file
 MainWindow(root,filename)
