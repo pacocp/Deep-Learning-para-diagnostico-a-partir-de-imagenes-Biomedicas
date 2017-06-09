@@ -46,7 +46,7 @@ class MainWindow():
         """ You can change the place of the images giving
         different values to the screen_width and screen_height """
         self.image_on_canvas = self.canvas.create_image((screen_width/2)-100, (screen_height/2)-200, anchor = NW, image = self.image)
-        self.texto = self.canvas.create_text(80,50,font=("Purisa", 16),text = filename)
+        self.texto = self.canvas.create_text((screen_width)-(screen_width/2),50,font=("Purisa", 16),text = filename)
 
          # button to close
         self.button_close = Button(main, text="Close", command=self.closeButton)
