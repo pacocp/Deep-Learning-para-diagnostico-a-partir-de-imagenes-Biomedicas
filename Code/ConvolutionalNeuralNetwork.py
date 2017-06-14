@@ -1,10 +1,13 @@
 #!/usr/bin/python3.5
 
+# Libraries that I need
 import tensorflow as tf
 from tensorflow.python.framework import ops
 from tensorflow.python.framework import dtypes
 import numpy
 import math
+import matplotlib
+matplotlib.use('TkAgg') # This is for being able to use a virtualenv
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 import os
@@ -14,6 +17,8 @@ from keras.layers import Dense, Dropout, Flatten, Activation
 from keras.layers import Conv2D, MaxPooling2D
 import keras
 import PIL
+
+# My own files's imports
 from model import create_model
 
 """
@@ -48,13 +53,14 @@ Full path of the different directories for loading the dataset to the network, a
 @param: nb_validation_samples, number of validation samples
 @param: nb_test_samples, number of test samples
 
+The order for the summation is: ad mci normal
 '''
 train_data_dir = './dataset/train'
-validation_data_dir = './dataset/train'
-test_data_dir = './dataset/train'
-nb_train_samples = 86 + 100 + 197
-nb_validation_samples = 18 + 21 + 42
-nb_test_samples = 19 + 21 + 43
+validation_data_dir = './dataset/validation'
+test_data_dir = './dataset/test'
+nb_train_samples = 149 + 443 + 269
+nb_validation_samples = 22 + 94 + 63
+nb_test_samples = 21 + 96 + 62
 
 '''Options for performing training, restore a model or test'''
 restore = True
@@ -126,7 +132,8 @@ if(train == True):
             validation_steps=nb_validation_samples)
 
     print("Saving the weights")
-    model.save_weights('weights.h5')  # always save your weights after training or during training
+    # always save your weights after training or during training
+    model.save_weights('weights.h5')
 
     # summarize history for accuracy
     plt.plot(history.history['acc'])
