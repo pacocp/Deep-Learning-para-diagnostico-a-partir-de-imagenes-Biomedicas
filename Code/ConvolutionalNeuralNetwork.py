@@ -1,4 +1,6 @@
-#!/usr/bin/python3.5
+#!/usr/bin/python3.6
+
+# For seeing the training tensorboard --logdir Graph
 
 # Libraries that I need
 import tensorflow as tf
@@ -17,9 +19,11 @@ from keras.layers import Dense, Dropout, Flatten, Activation
 from keras.layers import Conv2D, MaxPooling2D
 import keras
 import PIL
+import argparse
 
 # My own files's imports
 from model import create_model
+from train import train_model
 
 """
 Different parameters that allow to change variables of the whole network.
@@ -36,7 +40,8 @@ Different parameters that allow to change variables of the whole network.
 """
 
 BATCH_SIZE_TRAIN = 2000
-NUM_EPOCHS = 3
+NUM_EPOCHS = 1
+steps_per_epoch = 1
 IMAGE_HEIGHT =29
 IMAGE_WIDTH = 29
 dimension_first_conv = 16
@@ -63,9 +68,9 @@ nb_validation_samples = 22 + 94 + 63
 nb_test_samples = 21 + 96 + 62
 
 '''Options for performing training, restore a model or test'''
-restore = True
-train = False
-test = True
+restore = False
+train = True
+test = False
 
 '''
 For visualizing the model
@@ -83,76 +88,68 @@ plot(model, to_file='model.png')
 print("augmentation configuration for training")
 # this is the augmentation configuration we will use for training
 train_datagen = ImageDataGenerator(
-        rescale=1./255,
-        shear_range=0.2,
-        zoom_range=0.2,
-        horizontal_flip=True)
+		rescale=1./255,
+		shear_range=0.2,
+		zoom_range=0.2,
+		horizontal_flip=True)
 print("augmentation configuration for testing")
 # this is the augmentation configuration we will use for testing:
 # only rescaling
 test_datagen = ImageDataGenerator(rescale=1./255)
 
 train_generator = train_datagen.flow_from_directory(
-        train_data_dir,
-        target_size=(166, 256),
-        batch_size=32,
-        class_mode='binary')
+		train_data_dir,
+		target_size=(166, 256),
+		batch_size=32,
+		class_mode='binary')
 
 validation_generator = test_datagen.flow_from_directory(
-        validation_data_dir,
-        target_size=(166, 256),
-        batch_size=18,
-        class_mode='binary')
+		validation_data_dir,
+		target_size=(166, 256),
+		batch_size=18,
+		class_mode='binary')
 
 test_generator = test_datagen.flow_from_directory(
-        test_data_dir,
-        target_size=(166, 256),
-        batch_size=18,
-        class_mode='binary')
+		test_data_dir,
+		target_size=(166, 256),
+		batch_size=18,
+		class_mode='binary')
 
-'''
-Restoring the weights, the name could be changed depending the name of out file, but they are saved as weights.h5
-'''
+if __name__ == '__main__':
+
+	parser = argparse.ArgumentParser(description="Train convolutional neural network for predicting NIFTI images")
+	parser.add_argument("-tr", "--train",
+						help="if you want to train the network(0,1)",
+						default="false",
+						dest='train')
+	parser.add_argument("-r", "--restore",
+						help="if you want to restore the weights(0,1)",
+						default="false",
+						dest='restore')
+	parser.add_argument("-tst", "--test",
+						help="if you want to test the network(0,1)",
+						default="false",
+						dest='test')
+	args = parser.parse_args()
+	train = args.train
+	restore = args.restore
+	test = args.test
+
 #creating the model
 model = create_model()
-if(restore == True):
-    model.load_weights('weights.h5')
-
-if(train == True):
-    #Using the early stopping technique to prevent overfitting
-    earlyStopping= keras.callbacks.EarlyStopping(monitor='val_loss', patience=50, verbose=1, mode='auto')
-    print("Fitting the model")
-    history = model.fit_generator(
-            train_generator,
-            samples_per_epoch=BATCH_SIZE_TRAIN,
-            #callbacks=[earlyStopping],
-            epochs=NUM_EPOCHS,
-            steps_per_epoch=1,
-            validation_data=validation_generator,
-            validation_steps=nb_validation_samples)
-
-    print("Saving the weights")
-    # always save your weights after training or during training
-    model.save_weights('weights.h5')
-
-    # summarize history for accuracy
-    plt.plot(history.history['acc'])
-    plt.plot(history.history['val_acc'])
-    plt.title('model accuracy')
-    plt.ylabel('accuracy')
-    plt.xlabel('epoch')
-    plt.legend(['train', 'validation'], loc='upper left')
-    plt.show()
-    # summarize history for loss
-    plt.plot(history.history['loss'])
-    plt.plot(history.history['val_loss'])
-    plt.title('model loss')
-    plt.ylabel('loss')
-    plt.xlabel('epoch')
-    plt.legend(['train', 'validation'], loc='upper left')
-    plt.show()
-
-if(test == True):
-    print("Evaluating in test data...")
-    test_loss = model.evaluate_generator(test_generator,steps = nb_test_samples)
-    print("Loss and accuracy in the test set: Loss %g, Accuracy %g"%(test_loss[0],test_loss[1]))
+if(restore == "true"):
+	'''
+	Restoring the weights, the name could be changed depending the name of out file, but they are saved
+	as weights.h5
+	'''
+	model.load_weights('weights.h5')
+if(train == "true"):
+	'''
+	Training the model defining all the parameters. The methos could be found in train.py file.
+	'''
+	print("Training the model...")
+	train_model(model,BATCH_SIZE_TRAIN,NUM_EPOCHS,train_generator,validation_generator,steps_per_epoch,nb_validation_samples)
+if(test == "true"):
+	print("Evaluating in test data...")
+	test_loss = model.evaluate_generator(test_generator,steps = nb_test_samples)
+	print("Loss and accuracy in the test set: Loss %g, Accuracy %g"%(test_loss[0],test_loss[1]))
