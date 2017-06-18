@@ -1,4 +1,4 @@
-#!/usr/bin/python3.5
+#!/usr/bin/python3.6
 
 # Libraries that I need
 import tensorflow as tf
@@ -18,8 +18,9 @@ from keras.layers import Conv2D, MaxPooling2D
 import keras
 import PIL
 import argparse
+import pandas as pd
 
-def train_model(model,BATCH_SIZE_TRAIN,NUM_EPOCHS,train_generator,validation_generator,steps_per_epoch,nb_validation_samples):
+def train_model(model,BATCH_SIZE_TRAIN,NUM_EPOCHS,train_generator,validation_generator,steps_per_epoch,nb_validation_samples, df):
 	#Using the early stopping technique to prevent overfitting
 	earlyStopping= keras.callbacks.EarlyStopping(monitor='val_loss', patience=50, verbose=1, mode='auto')
 	print("Fitting the model")
@@ -38,6 +39,14 @@ def train_model(model,BATCH_SIZE_TRAIN,NUM_EPOCHS,train_generator,validation_gen
 	# always save your weights after training or during training
 	model.save_weights('weights.h5')
 
+	print("Saving in the file the training results...")
+	# First we have to create the dictionary with the results
+	data_of_training = {'BATCH_SIZE_TRAIN': BATCH_SIZE_TRAIN, 'STEPS_PER_EPOCH': steps_per_epoch,
+						'NUM_EPOCHS': NUM_EPOCHS, 'ACCURACY_TRAIN': history.history['acc'],
+						'VAL_ACC_TRAIN': history.history['val_acc'], 'LOSS_TRAIN': history.history['loss'],
+						'VAL_LOSS_TRAIN': history.history['val_loss']}
+	df_aux = pd.DataFrame(data=[data_of_training])
+	df = df.append(df_aux)
 	# summarize history for accuracy
 	plt.plot(history.history['acc'])
 	plt.plot(history.history['val_acc'])
@@ -54,3 +63,5 @@ def train_model(model,BATCH_SIZE_TRAIN,NUM_EPOCHS,train_generator,validation_gen
 	plt.xlabel('epoch')
 	plt.legend(['train', 'validation'], loc='upper left')
 	plt.show()
+
+	return df

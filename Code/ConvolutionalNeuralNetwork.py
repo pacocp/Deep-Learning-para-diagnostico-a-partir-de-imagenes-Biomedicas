@@ -20,10 +20,12 @@ from keras.layers import Conv2D, MaxPooling2D
 import keras
 import PIL
 import argparse
+import pandas as pd
 
 # My own files's imports
 from model import create_model
 from train import train_model
+from save_load_results import create_file,read_from_file,write_to_file
 
 """
 Different parameters that allow to change variables of the whole network.
@@ -39,7 +41,7 @@ Different parameters that allow to change variables of the whole network.
 
 """
 
-BATCH_SIZE_TRAIN = 2000
+BATCH_SIZE_TRAIN = 100
 NUM_EPOCHS = 1
 steps_per_epoch = 1
 IMAGE_HEIGHT =29
@@ -66,11 +68,6 @@ test_data_dir = './dataset/test'
 nb_train_samples = 149 + 443 + 269
 nb_validation_samples = 22 + 94 + 63
 nb_test_samples = 21 + 96 + 62
-
-'''Options for performing training, restore a model or test'''
-restore = False
-train = True
-test = False
 
 '''
 For visualizing the model
@@ -130,10 +127,28 @@ if __name__ == '__main__':
 						help="if you want to test the network(0,1)",
 						default="false",
 						dest='test')
+	parser.add_argument("-o", "--outputFile",
+						help="outputname for saving the experiments results",
+						default="",
+						dest='name_of_file')
+
 	args = parser.parse_args()
 	train = args.train
 	restore = args.restore
 	test = args.test
+	name_of_file = args.name_of_file
+
+# Trying to open the results file, if it doesn't exist create it
+try:
+	df_experiments = read_from_file(name_of_file)
+except:
+	# Creating the columns for the dataframe
+	columns = ['BATCH_SIZE_TRAIN','STEPS_PER_EPOCH','NUM_EPOCHS','ACCURACY_TRAIN','VAL_ACC_TRAIN','LOSS_TRAIN','VAL_LOSS_TRAIN',
+				'ACCURACY_TEST','VAL_ACC_TEST','LOSS_TEST','VAL_LOSS_TEST']
+	# Creating the file for the dataframe
+	create_file(columns,name_of_file)
+	# Opening the experiments file
+	df_experiments = read_from_file(name_of_file)
 
 #creating the model
 model = create_model()
@@ -145,11 +160,17 @@ if(restore == "true"):
 	model.load_weights('weights.h5')
 if(train == "true"):
 	'''
-	Training the model defining all the parameters. The methos could be found in train.py file.
+	Training the model defining all the parameters. The method could be found in train.py file.
 	'''
 	print("Training the model...")
-	train_model(model,BATCH_SIZE_TRAIN,NUM_EPOCHS,train_generator,validation_generator,steps_per_epoch,nb_validation_samples)
+	df_experiments = train_model(model,BATCH_SIZE_TRAIN,NUM_EPOCHS,train_generator,validation_generator,
+					steps_per_epoch,nb_validation_samples,df_experiments)
+	write_to_file(df_experiments,name_of_file)
 if(test == "true"):
 	print("Evaluating in test data...")
 	test_loss = model.evaluate_generator(test_generator,steps = nb_test_samples)
 	print("Loss and accuracy in the test set: Loss %g, Accuracy %g"%(test_loss[0],test_loss[1]))
+	# Writting it to the dataframe
+	df_experiments.at(len(df.index)-1,'VAL_ACC_TEST') = test_loss[1]
+	df_experiments.at(len(df.index)-1,'VAL_LOSS_TEST') = test_loss[1]
+	write_to_file(df_experiments,name_of_file)
