@@ -8,7 +8,7 @@ This method is going to be used both by the experiment script, and the software
 '''
 def create_file(columns,name_of_file):
 	# create the pandas daframe
-	df = pd.DataFrame(columns=columns)
+	df = pd.DataFrame(index=columns[0],columns=columns)
 	#saving it to a csv
 	df.to_csv("results/"+name_of_file,sep=',', encoding='utf-8')
 

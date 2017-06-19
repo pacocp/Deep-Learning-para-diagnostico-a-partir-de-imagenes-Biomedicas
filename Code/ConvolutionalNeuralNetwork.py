@@ -143,7 +143,7 @@ try:
 	df_experiments = read_from_file(name_of_file)
 except:
 	# Creating the columns for the dataframe
-	columns = ['BATCH_SIZE_TRAIN','STEPS_PER_EPOCH','NUM_EPOCHS','ACCURACY_TRAIN','VAL_ACC_TRAIN','LOSS_TRAIN','VAL_LOSS_TRAIN','ACCURACY_TEST','VAL_ACC_TEST','LOSS_TEST','VAL_LOSS_TEST']
+	columns = ['ID','BATCH_SIZE_TRAIN','STEPS_PER_EPOCH','NUM_EPOCHS','ACCURACY_TRAIN','VAL_ACC_TRAIN','LOSS_TRAIN','VAL_LOSS_TRAIN','VAL_ACC_TEST','VAL_LOSS_TEST']
 	# Creating the file for the dataframe
 	create_file(columns,name_of_file)
 	# Opening the experiments file
@@ -171,5 +171,5 @@ if(test == "true"):
 	print("Loss and accuracy in the test set: Loss %g, Accuracy %g"%(test_loss[0],test_loss[1]))
 	# Writting it to the dataframe
 	df_experiments.at(len(df.index)-1,'VAL_ACC_TEST') = test_loss[1]
-	df_experiments.at(len(df.index)-1,'VAL_LOSS_TEST') = test_loss[1]
+	df_experiments.at(len(df.index)-1,'VAL_LOSS_TEST') = test_loss[0]
 	write_to_file(df_experiments,name_of_file)
