@@ -170,6 +170,6 @@ if(test == "true"):
 	test_loss = model.evaluate_generator(test_generator,steps = nb_test_samples)
 	print("Loss and accuracy in the test set: Loss %g, Accuracy %g"%(test_loss[0],test_loss[1]))
 	# Writting it to the dataframe
-	df_experiments.at(len(df.index)-1,'VAL_ACC_TEST') = test_loss[1]
-	df_experiments.at(len(df.index)-1,'VAL_LOSS_TEST') = test_loss[0]
+	df_experiments.loc[len(df_experiments.index)-1]['VAL_ACC_TEST'] = test_loss[1]
+	df_experiments.loc[len(df_experiments.index)-1]['VAL_LOSS_TEST'] = test_loss[0]
 	write_to_file(df_experiments,name_of_file)
