@@ -3,18 +3,21 @@
 import tensorflow as tf
 from tensorflow.python.framework import ops
 from tensorflow.python.framework import dtypes
-import numpy
+import numpy as np
 import math
-import matplotlib.pyplot as plt
-import matplotlib.image as mpimg
 import os
 from keras.preprocessing.image import ImageDataGenerator
+from keras.preprocessing import image
 from keras.models import Sequential
 from keras.layers import Dense, Dropout, Flatten, Activation
 from keras.layers import Conv2D, MaxPooling2D
 import keras
 import PIL
+import tempfile
+import shutil
+# Imports from my files
 from model import create_model
+from save_load_results import create_temp_dir,delete_temp_dir
 """
 Different parameters that allow to change variables of the whole network.
 
@@ -37,58 +40,23 @@ dimension_first_conv = 16
 dimension_second_conv = 32
 dimension_fc = 64
 
-'''
-Full path of the different directories for loading the dataset to the network, and also values of the dataset.
-
-@param: nb_train_samples, number of train samples
-@param: nb_validation_samples, number of validation samples
-@param: nb_test_samples, number of test samples
-
-'''
-nb_train_samples = 86 + 100 + 197
-nb_validation_samples = 18 + 21 + 42
-nb_test_samples = 19 + 21 + 43
-
 '''Options for performing training, restore a model or test'''
 restore = True
 
-if __name__ == '__main__':
-
-	parser = argparse.ArgumentParser(description="Test the neural network that ")
-	parser.add_argument("-i", "--inputFile",
-						help="input file",
-						dest='inputFile')
-	parser.add_argument("-a", "--allImages",
-						help="all images in the folder(0,1)",
-						dest='allImages')
-    parser.add_argument("-d", "--directory",
-                        help="directory where the images are"
-                        dest='test_data_dir')
-
-	args = parser.parse_args()
-
-	inputFile = args.inputFile
-	allImages = args.allImages
-    test_data_dir = args.test_data_dir
-
-    '''
-    Restoring the weights, the name could be changed depending the name of out file,
-    but they are saved as weights.h5
-    '''
-    #creating the model
-    model = create_model()
-    model.load_weights('weights.h5')
-    print("augmentation configuration for testing")
-    # this is the augmentation configuration we will use for testing:
-    # only rescaling
-    test_datagen = ImageDataGenerator()
-
-    test_generator = test_datagen.flow_from_directory(
-            test_data_dir,
-            target_size=(166, 256),
-            class_mode='binary')
-    # Then evaluating in the data
-    print("Evaluating in test data...")
-    predictions = model.predict(test_generator)
-    print("Classes predict are: ")
-    print(predictions)
+def predict_class(inputFile):
+		'''
+		Predict the class for a new image that the user choose.
+		'''
+		img = image.load_img(inputFile,target_size=(166, 256))
+		img_predict = image.img_to_array(img)
+		img_predict = np.expand_dims(img_predict,axis=0)
+		#creating the model
+		model = create_model()
+		model.load_weights('weights.h5')
+		print("augmentation configuration for testing")
+		# Then evaluating in the data
+		print("Evaluating in test data...")
+		predictions = model.predict_classes(img_predict)
+		print("Classes predict are: ")
+		print(predictions)
+		return predictions

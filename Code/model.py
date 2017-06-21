@@ -1,12 +1,10 @@
-#!/usr/bin/python3.5
+#!/usr/bin/python3.6
 
 import tensorflow as tf
 from tensorflow.python.framework import ops
 from tensorflow.python.framework import dtypes
 import numpy
 import math
-import matplotlib.pyplot as plt
-import matplotlib.image as mpimg
 import os
 from keras.preprocessing.image import ImageDataGenerator
 from keras.models import Sequential

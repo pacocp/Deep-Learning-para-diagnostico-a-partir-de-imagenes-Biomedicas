@@ -41,12 +41,12 @@ def train_model(model,BATCH_SIZE_TRAIN,NUM_EPOCHS,train_generator,validation_gen
 
 	print("Saving in the file the training results...")
 	# First we have to create the dictionary with the results
-	data_of_training = {'BATCH_SIZE_TRAIN': BATCH_SIZE_TRAIN, 'STEPS_PER_EPOCH': steps_per_epoch,
+	data_of_training = {'ID': len(df.index),'BATCH_SIZE_TRAIN': BATCH_SIZE_TRAIN, 'STEPS_PER_EPOCH': steps_per_epoch,
 						'NUM_EPOCHS': NUM_EPOCHS, 'ACCURACY_TRAIN': history.history['acc'],
 						'VAL_ACC_TRAIN': history.history['val_acc'], 'LOSS_TRAIN': history.history['loss'],
 						'VAL_LOSS_TRAIN': history.history['val_loss']}
 	df_aux = pd.DataFrame(data=[data_of_training])
-	df = df.append(df_aux)
+	df = df.append(df_aux, ignore_index=True)
 	# summarize history for accuracy
 	plt.plot(history.history['acc'])
 	plt.plot(history.history['val_acc'])
