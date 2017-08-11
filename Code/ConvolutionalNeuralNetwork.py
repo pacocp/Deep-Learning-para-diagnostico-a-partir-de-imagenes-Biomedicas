@@ -3,10 +3,12 @@
 # For seeing the training tensorboard --logdir Graph
 
 # Libraries that I need
+
+import theano
 import tensorflow as tf
 from tensorflow.python.framework import ops
 from tensorflow.python.framework import dtypes
-import numpy
+import numpy as np
 import math
 import matplotlib
 matplotlib.use('TkAgg') # This is for being able to use a virtualenv
@@ -21,11 +23,13 @@ import keras
 import PIL
 import argparse
 import pandas as pd
+from keras.utils.np_utils import to_categorical
 
 # My own files's imports
-from model import create_model
-from train import train_model
+from model import create_model, create_model_RES
+from train import train_model, train_model_CV
 from save_load_results import create_file,read_from_file,write_to_file
+from utils import read_images_and_labels
 
 """
 Different parameters that allow to change variables of the whole network.
@@ -41,9 +45,8 @@ Different parameters that allow to change variables of the whole network.
 
 """
 
-BATCH_SIZE_TRAIN = 100
-NUM_EPOCHS = 1
-steps_per_epoch = 1
+BATCH_SIZE_TRAIN = 5
+NUM_EPOCHS = 150
 IMAGE_HEIGHT =29
 IMAGE_WIDTH = 29
 dimension_first_conv = 16
@@ -61,14 +64,23 @@ Full path of the different directories for loading the dataset to the network, a
 @param: nb_test_samples, number of test samples
 
 The order for the summation is: ad mci normal
++ 443
++ 94
++ 96
 '''
 train_data_dir = './dataset/train'
 validation_data_dir = './dataset/validation'
 test_data_dir = './dataset/test'
-nb_train_samples = 149 + 443 + 269
-nb_validation_samples = 22 + 94 + 63
-nb_test_samples = 21 + 96 + 62
-
+train_data_dir_small = './dataset_small/train'
+validation_data_dir_small = './dataset_small/validation'
+test_data_dir_small = './dataset_small/test'
+nb_train_samples = 112 + 160
+nb_validation_samples = 23 + 35
+nb_test_samples = 24 + 33
+nb_train_samples_small = 52 + 55
+nb_validation_samples_small = 6 + 25
+nb_test_samples_small = 8 + 10
+steps_per_epoch = 1
 '''
 For visualizing the model
 
@@ -81,34 +93,32 @@ from keras.utils.visualize_util import plot
 print("Plotting the model")
 plot(model, to_file='model.png')
 '''
-
 print("augmentation configuration for training")
 # this is the augmentation configuration we will use for training
-train_datagen = ImageDataGenerator(
-		rescale=1./255,
-		shear_range=0.2,
-		zoom_range=0.2,
-		horizontal_flip=True)
+train_datagen = ImageDataGenerator()
 print("augmentation configuration for testing")
 # this is the augmentation configuration we will use for testing:
 # only rescaling
-test_datagen = ImageDataGenerator(rescale=1./255)
+test_datagen = ImageDataGenerator()
 
 train_generator = train_datagen.flow_from_directory(
 		train_data_dir,
-		target_size=(166, 256),
-		batch_size=32)
+		target_size=(110, 110))
 
 validation_generator = test_datagen.flow_from_directory(
 		validation_data_dir,
-		target_size=(166, 256),
-		batch_size=18)
+		target_size=(110, 110))
 
 test_generator = test_datagen.flow_from_directory(
 		test_data_dir,
-		target_size=(166, 256),
-		batch_size=18)
+		target_size=(110, 110))
 
+print("DATA GENERATOR----------------------")
+print(train_generator.class_indices)
+
+# Reading images and labels
+images,labels = read_images_and_labels('./dataset/train/ad/metadata.csv')
+test_images,test_labels = read_images_and_labels('./dataset/test/ad/metadata.csv')
 if __name__ == '__main__':
 
 	parser = argparse.ArgumentParser(description="Train convolutional neural network for predicting NIFTI images")
@@ -135,6 +145,8 @@ if __name__ == '__main__':
 	test = args.test
 	name_of_file = args.name_of_file
 
+
+'''
 # Trying to open the results file, if it doesn't exist create it
 try:
 	df_experiments = read_from_file(name_of_file)
@@ -145,7 +157,7 @@ except:
 	create_file(columns,name_of_file)
 	# Opening the experiments file
 	df_experiments = read_from_file(name_of_file)
-
+'''
 #creating the model
 model = create_model()
 if(restore == "true"):
@@ -157,16 +169,29 @@ if(restore == "true"):
 if(train == "true"):
 	'''
 	Training the model defining all the parameters. The method could be found in train.py file.
-	'''
+
 	print("Training the model...")
 	df_experiments = train_model(model,BATCH_SIZE_TRAIN,NUM_EPOCHS,train_generator,validation_generator,
-					steps_per_epoch,nb_validation_samples,df_experiments)
-	write_to_file(df_experiments,name_of_file)
+					steps_per_epoch,nb_validation_samples,nb_train_samples,df_experiments)
+	'''
+	best_model = train_model_CV(images,labels,model,BATCH_SIZE_TRAIN,NUM_EPOCHS,train_generator,validation_generator,
+					steps_per_epoch,nb_validation_samples,nb_train_samples)
+	#write_to_file(df_experiments,name_of_file)
 if(test == "true"):
+	for i in range(len(test_labels)):
+		if test_labels[i] == "AD":
+			test_labels[i] = 0
+		else:
+			test_labels[i] = 1
 	print("Evaluating in test data...")
-	test_loss = model.evaluate_generator(test_generator,steps = nb_test_samples)
+	test_X = np.array(test_images)
+	test_Y = np.array(test_labels)
+	test_Y = to_categorical(test_Y)
+	test_loss = model.evaluate(test_X,test_Y)
 	print("Loss and accuracy in the test set: Loss %g, Accuracy %g"%(test_loss[0],test_loss[1]))
 	# Writting it to the dataframe
+	'''
 	df_experiments.loc[len(df_experiments.index)-1]['VAL_ACC_TEST'] = test_loss[1]
 	df_experiments.loc[len(df_experiments.index)-1]['VAL_LOSS_TEST'] = test_loss[0]
 	write_to_file(df_experiments,name_of_file)
+	'''
