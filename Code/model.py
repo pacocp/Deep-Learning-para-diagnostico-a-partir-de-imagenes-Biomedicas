@@ -14,7 +14,7 @@ from keras.layers.normalization import BatchNormalization
 from keras.optimizers import SGD, Nadam
 import keras
 import PIL
-
+from keras.regularizers import l2
 """
 Different parameters that allow to change variables of the whole network.
 
@@ -101,10 +101,10 @@ def create_model():
     model.add(Activation("relu"))
 
     model.add(Dense(2))
-    model.add(Activation('softmax'))
 
+    model.add(Activation('softmax'))
     model.compile(loss='categorical_crossentropy',
-      optimizer=keras.optimizers.Adam(lr=27*10^-6),
+      optimizer=keras.optimizers.Adam(lr=27*1e-04,clipnorm=1., clipvalue=0.5),
       metrics=['accuracy'])
     return model
 

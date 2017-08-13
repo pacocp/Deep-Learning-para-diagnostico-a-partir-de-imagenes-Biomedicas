@@ -27,7 +27,7 @@ from keras.utils.np_utils import to_categorical
 
 # My own files's imports
 from model import create_model, create_model_RES
-from train import train_model, train_model_CV
+from train import train_model, train_model_CV, train_model_CV_generator, train_model_CV_MV
 from save_load_results import create_file,read_from_file,write_to_file
 from utils import read_images_and_labels
 
@@ -68,19 +68,18 @@ The order for the summation is: ad mci normal
 + 94
 + 96
 '''
-train_data_dir = './dataset/train'
-validation_data_dir = './dataset/validation'
-test_data_dir = './dataset/test'
+train_data_dir = './dataset_separation/train'
+test_data_dir = './dataset_separation/test'
 train_data_dir_small = './dataset_small/train'
 validation_data_dir_small = './dataset_small/validation'
 test_data_dir_small = './dataset_small/test'
-nb_train_samples = 112 + 160
+nb_train_samples = 122 + 190
 nb_validation_samples = 23 + 35
-nb_test_samples = 24 + 33
+nb_test_samples = 34 + 38
 nb_train_samples_small = 52 + 55
 nb_validation_samples_small = 6 + 25
 nb_test_samples_small = 8 + 10
-steps_per_epoch = 1
+steps_per_epoch = nb_train_samples // 5
 '''
 For visualizing the model
 
@@ -95,7 +94,7 @@ plot(model, to_file='model.png')
 '''
 print("augmentation configuration for training")
 # this is the augmentation configuration we will use for training
-train_datagen = ImageDataGenerator()
+train_datagen = ImageDataGenerator(horizontal_flip=True)
 print("augmentation configuration for testing")
 # this is the augmentation configuration we will use for testing:
 # only rescaling
@@ -103,22 +102,28 @@ test_datagen = ImageDataGenerator()
 
 train_generator = train_datagen.flow_from_directory(
 		train_data_dir,
-		target_size=(110, 110))
-
+		target_size=(110, 110),
+		batch_size=5,
+		shuffle=True)
+'''
 validation_generator = test_datagen.flow_from_directory(
 		validation_data_dir,
-		target_size=(110, 110))
-
+		target_size=(110, 110),
+		shuffle=True)
+'''
 test_generator = test_datagen.flow_from_directory(
 		test_data_dir,
-		target_size=(110, 110))
+		target_size=(110, 110),
+		shuffle=True)
 
 print("DATA GENERATOR----------------------")
 print(train_generator.class_indices)
 
 # Reading images and labels
-images,labels = read_images_and_labels('./dataset/train/ad/metadata.csv')
-test_images,test_labels = read_images_and_labels('./dataset/test/ad/metadata.csv')
+images1,labels = read_images_and_labels('dataset/')
+images2,labels2 = read_images_and_labels('dataset_slice_45/')
+images3,labels3 = read_images_and_labels('dataset_slice_65/')
+#test_images,test_labels = read_images_and_labels('./dataset/test/ad/metadata.csv')
 if __name__ == '__main__':
 
 	parser = argparse.ArgumentParser(description="Train convolutional neural network for predicting NIFTI images")
@@ -167,17 +172,20 @@ if(restore == "true"):
 	'''
 	model.load_weights('weights.h5')
 if(train == "true"):
-	'''
-	Training the model defining all the parameters. The method could be found in train.py file.
+
+	#Training the model defining all the parameters. The method could be found in train.py file.
 
 	print("Training the model...")
-	df_experiments = train_model(model,BATCH_SIZE_TRAIN,NUM_EPOCHS,train_generator,validation_generator,
-					steps_per_epoch,nb_validation_samples,nb_train_samples,df_experiments)
 	'''
-	best_model = train_model_CV(images,labels,model,BATCH_SIZE_TRAIN,NUM_EPOCHS,train_generator,validation_generator,
-					steps_per_epoch,nb_validation_samples,nb_train_samples)
-	#write_to_file(df_experiments,name_of_file)
+	train_model(model,BATCH_SIZE_TRAIN,NUM_EPOCHS,train_generator,steps_per_epoch)
+
+	train_model_CV(images,labels,model,train_generator)
+
+	train_model_CV_generator(images,labels,model)
+	'''
+	train_model_CV_MV(images1,images2,images3,labels,model)
 if(test == "true"):
+	'''
 	for i in range(len(test_labels)):
 		if test_labels[i] == "AD":
 			test_labels[i] = 0
@@ -191,7 +199,7 @@ if(test == "true"):
 	print("Loss and accuracy in the test set: Loss %g, Accuracy %g"%(test_loss[0],test_loss[1]))
 	# Writting it to the dataframe
 	'''
-	df_experiments.loc[len(df_experiments.index)-1]['VAL_ACC_TEST'] = test_loss[1]
-	df_experiments.loc[len(df_experiments.index)-1]['VAL_LOSS_TEST'] = test_loss[0]
-	write_to_file(df_experiments,name_of_file)
-	'''
+
+	test_loss = model.evaluate_generator(test_generator, steps=1)
+	print("Loss and accuracy in the test set: Loss %g, Accuracy %g"%(test_loss[0],test_loss[1]))
+	print(model.metrics_names)
