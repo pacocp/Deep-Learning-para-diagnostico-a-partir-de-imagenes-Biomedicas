@@ -27,9 +27,9 @@ from keras.utils.np_utils import to_categorical
 
 # My own files's imports
 from model import create_model, create_model_RES
-from train import train_model, train_model_CV, train_model_CV_generator, train_model_CV_MV
-from save_load_results import create_file,read_from_file,write_to_file
-from utils import read_images_and_labels
+from train import train_model, train_model_CV, train_model_CV_generator, train_model_CV_MV, train_LOO
+from train import train_LOO_pacient
+from utils import read_images_and_labels, read_slices
 
 """
 Different parameters that allow to change variables of the whole network.
@@ -120,9 +120,10 @@ print("DATA GENERATOR----------------------")
 print(train_generator.class_indices)
 
 # Reading images and labels
-images1,labels = read_images_and_labels('dataset/')
-images2,labels2 = read_images_and_labels('dataset_slice_45/')
-images3,labels3 = read_images_and_labels('dataset_slice_65/')
+#images1,labels,list_of_images1 = read_images_and_labels('dataset/')
+images2,labels2,names = read_images_and_labels('dataset_slice_45/')
+#images3,labels3,list_of_images3 = read_images_and_labels('dataset_slice_65/')
+#slices_images,slices_labels = read_slices('dataset_slice_65/')
 #test_images,test_labels = read_images_and_labels('./dataset/test/ad/metadata.csv')
 if __name__ == '__main__':
 
@@ -179,11 +180,15 @@ if(train == "true"):
 	'''
 	train_model(model,BATCH_SIZE_TRAIN,NUM_EPOCHS,train_generator,steps_per_epoch)
 
-	train_model_CV(images,labels,model,train_generator)
+	train_model_CV(slices_images,slices_labels)
 
 	train_model_CV_generator(images,labels,model)
-	'''
+
 	train_model_CV_MV(images1,images2,images3,labels,model)
+
+	train_LOO(images2,labels2)
+	'''
+	train_LOO_pacient(images2,labels2,names)
 if(test == "true"):
 	'''
 	for i in range(len(test_labels)):
