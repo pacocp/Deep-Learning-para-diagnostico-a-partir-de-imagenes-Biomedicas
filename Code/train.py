@@ -19,8 +19,8 @@ import keras
 import PIL
 import argparse
 import pandas as pd
-from sklearn.model_selection import StratifiedKFold, KFold, cross_val_score
-from keras.wrappers.scikit_learn import KerasClassifier
+
+
 
 
 from model import create_model
@@ -43,7 +43,7 @@ def train_model(model,BATCH_SIZE_TRAIN,NUM_EPOCHS,train_generator,steps_per_epoc
 	model.save_weights('weights.h5')
 
 
-def train_model_CV(images,labels,model):
+def train_model_CV(slices_images,slices_labels):
 	'''
 	Training model using cross-validation
 
@@ -52,8 +52,8 @@ def train_model_CV(images,labels,model):
 
 	'''
 
-	images,labels = reorderRandomly(images,labels)
-
+	#images,labels,list_of_images = reorderRandomly(images,labels,list_of_images)
+	'''
 	for i in range(len(labels)):
 		if labels[i] == "AD":
 			labels[i] = 0
@@ -61,11 +61,24 @@ def train_model_CV(images,labels,model):
 			labels[i] = 1
 
 	slices_images = [images[i::5] for i in range(5)]
+	slices_list_of_images = [list_of_images[i::5] for i in range(5)]
 	slices_labels = [labels[i::5] for i in range(5)]
 
+	print(slices_list_of_images)
+	'''
 	models = {}
 	histories = {}
 	values_acc = []
+	print(len(slices_labels[0]))
+	print(len(slices_labels[1]))
+	print(len(slices_labels[2]))
+	print(len(slices_labels[3]))
+	print(len(slices_labels[4]))
+	print(len(slices_images[0]))
+	print(len(slices_images[1]))
+	print(len(slices_images[2]))
+	print(len(slices_images[3]))
+	print(len(slices_images[4]))
 	for i in range(5):
 		model = create_model()
 		X_test = slices_images[i]
@@ -84,7 +97,7 @@ def train_model_CV(images,labels,model):
 		from keras.utils.np_utils import to_categorical
 		Y_train = to_categorical(Y_train)
 		Y_test = to_categorical(Y_test)
-		history = model.fit(X_train,Y_train,epochs=70,batch_size=5)
+		history = model.fit(X_train,Y_train,epochs=50,batch_size=5)
 		models['model'+str(i)] = model
 		test_loss = model.evaluate(X_test,Y_test)
 		print("Loss and accuracy in the test set: Loss %g, Accuracy %g"%(test_loss[0],test_loss[1]))
@@ -154,6 +167,7 @@ def train_model_CV_MV(images1,images2,images3,labels,model):
 	----------
 
 	'''
+	f = open('results_cross_validation.txt','w')
 	labels_aux = labels
 	images1,labels = reorderRandomly(images1,labels)
 	images2,labels_aux = reorderRandomly(images2,labels_aux)
@@ -174,6 +188,8 @@ def train_model_CV_MV(images1,images2,images3,labels,model):
 	histories = {}
 	values_acc = []
 	for i in range(5):
+		f.write("Results for the fold: "+str(i))
+		f.write("\n")
 		model1 = create_model()
 		model2 = create_model()
 		model3 = create_model()
@@ -214,23 +230,115 @@ def train_model_CV_MV(images1,images2,images3,labels,model):
 		prediction_3 = model3.predict_classes(X_test3)
 
 		count = 0
-		for i in range(len(prediction_1)):
+		for index in range(len(prediction_1)):
 
-			vote = int(prediction_1[i]+prediction_2[i]+prediction_3[i])
+			vote = int(prediction_1[index]+prediction_2[index]+prediction_3[index])
 
 			if(vote >= 2):
 				major_vote = 1
 			else:
 				major_vote = 0
 
-			if(int(Y_test[i][0]) == 1):
+			if(int(Y_test[index][0]) == 1):
 				true = 0
 			else:
 				true = 1
+			f.write("The value of the prediction is: " + str(major_vote) +"and the true value is: "+str(true))
+			f.write("\n")
 			if(major_vote == true):
 				count = count + 1
 
 		values_acc.append(count/len(Y_test))
+
+	mean = calculate_mean(values_acc)
+	print("The mean of all the test values is: %g"%mean)
+	f.close()
+
+def train_LOO(images,labels):
+	values_acc = []
+	for i in range(len(labels)):
+		if labels[i] == "AD":
+			labels[i] = 0
+		else:
+			labels[i] = 1
+	print("The lenght of images is "+str(len(images)))
+	for i in range(len(images)):
+		model = create_model()
+		X_test = []
+		Y_test = []
+		X_test.append(images[i])
+		Y_test.append(labels[i])
+		X_train = []
+		Y_train = []
+		for j in range(len(images)):
+			if j != i:
+				X_train.append(images[j])
+				Y_train.append(labels[j])
+
+
+		X_train = np.array(X_train)
+		Y_train = np.array(Y_train)
+		X_test = np.array(X_test)
+		Y_test = np.array(Y_test)
+		from keras.utils.np_utils import to_categorical
+		Y_train = to_categorical(Y_train,2)
+		Y_test = to_categorical(Y_test,2)
+
+
+		history = model.fit(X_train,Y_train,epochs=70,batch_size=10)
+		test_loss = model.evaluate(X_test,Y_test)
+		print("Loss and accuracy in the test set: Loss %g, Accuracy %g"%(test_loss[0],test_loss[1]))
+		values_acc.append(test_loss[1])
+
+	mean = calculate_mean(values_acc)
+	print("The mean of all the test values is: %g"%mean)
+
+def train_LOO_pacient(images,labels,names):
+	print("Training LOO with pacient name")
+	values_acc = []
+	already_tested = []
+	for i in range(len(labels)):
+		if labels[i] == "AD":
+			labels[i] = 0
+		else:
+			labels[i] = 1
+	print("The lenght of images is "+str(len(images)))
+	for i in range(len(images)):
+		model = create_model()
+		X_test = []
+		Y_test = []
+		# If we haven't tested that pacient already
+		# we insert it to the test set and also
+		# all the images with the same name
+		if(not(names[i] in already_tested)):
+			already_tested.append(names[i])
+			X_test.append(images[i])
+			Y_test.append(labels[i])
+			for j in range(len(images)):
+				if j!=i and names[j] == names[i]:
+					X_test.append(images[j])
+					Y_test.append(labels[j])
+			X_train = []
+			Y_train = []
+			for j in range(len(images)):
+				if names[j] != names[i]:
+					X_train.append(images[j])
+					Y_train.append(labels[j])
+
+			X_train = np.array(X_train)
+			Y_train = np.array(Y_train)
+			X_test = np.array(X_test)
+			Y_test = np.array(Y_test)
+			from keras.utils.np_utils import to_categorical
+			Y_train = to_categorical(Y_train,2)
+			Y_test = to_categorical(Y_test,2)
+			print("The len of the training set is: "+str(len(X_train)))
+			print("The len of the test set is: "+str(len(X_test)))
+
+			history = model.fit(X_train,Y_train,epochs=70,batch_size=10)
+			test_loss = model.evaluate(X_test,Y_test)
+			print("Loss and accuracy in the test set: Loss %g, Accuracy %g"%(test_loss[0],test_loss[1]))
+			values_acc.append(test_loss[1])
 
 	mean = calculate_mean(values_acc)
 	print("The mean of all the test values is: %g"%mean)
