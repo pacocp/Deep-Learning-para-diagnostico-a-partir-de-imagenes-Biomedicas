@@ -10,85 +10,13 @@ from sklearn.utils import shuffle
 from imread import imread
 import itertools
 
-def iterate_minibatches_train(inputs, targets, batchsize, shuffle=False):
-	"""Iterate minibatches on train subset.
-
-	Parameters
-	----------
-	inputs : numpy.ndarray
-		Numpy array of input images.
-	targets : numpy.ndarray
-		Numpy array of binary labels.
-	batchsize : integer
-		Size of the output array batches.
-	shuffle : bool, optional
-		Whether to shuffle input before sampling. Default is False.
-
-	Returns
-	-------
-	numpy.ndarray, numpy.ndarray
-		inputs, targets for given batch.
-	"""
-	assert len(inputs) == len(targets)
-	indices = np.arange(len(inputs))
-	if shuffle:
-		np.random.shuffle(indices)
-	m_len = np.min([sum(targets == 1), sum(targets == 0)])
-	targets = targets[indices]
-	pos = inputs[indices][np.where(targets == 1)[0][:m_len]]
-	neg = inputs[indices][np.where(targets == 0)[0][:m_len]]
-	pos_t = targets[np.where(targets == 1)[0][:m_len]]
-	neg_t = targets[np.where(targets == 0)[0][:m_len]]
-	inputs = np.insert(pos, np.arange(len(neg)), neg, axis=0)
-	targets = np.insert(pos_t, np.arange(len(neg_t)), neg_t, axis=0)
-
-	assert len(inputs) == len(targets)
-	indices = np.arange(len(inputs))
-	if shuffle:
-		np.random.shuffle(indices)
-	if batchsize > len(indices):
-		sys.stderr.write('BatchSize out of index size')
-		batchsize = len(indices)
-	for start_idx in range(0, len(inputs) - batchsize + 1, batchsize):
-		if shuffle:
-			excerpt = indices[start_idx:start_idx + batchsize]
-		else:
-			excerpt = slice(start_idx, start_idx + batchsize)
-		yield inputs[excerpt], targets[excerpt]
-
-
-def iterate_minibatches(inputs, targets, batchsize, shuffle=False):
-	"""Iterate minibatches.
-
-	Parameters
-	----------
-	inputs : numpy.ndarray
-		Numpy array of input images.
-	targets : numpy.ndarray
-		Numpy array of class labels.
-	batchsize : integer
-		Size of the output array batches.
-	shuffle : bool, optional
-		Whether to shuffle input before sampling. Default is False.
-
-	Returns
-	-------
-	numpy.ndarray, numpy.ndarray
-		inputs, targets for given batch.
-	"""
-	if shuffle:
-		indices = np.arange(len(inputs))
-		np.random.shuffle(indices)
-	for start_idx in range(0, len(inputs) - batchsize + 1, batchsize):
-		if shuffle:
-			excerpt = indices[start_idx:start_idx + batchsize]
-		else:
-			excerpt = slice(start_idx, start_idx + batchsize)
-		yield inputs[excerpt], targets[excerpt]
-
 def read_images_and_labels(path):
 	'''
 	Reading the images and the labels.
+
+	Parameters
+	-----------
+	path: string. Path contanining the images
 
 	Returns
 	-------
@@ -128,12 +56,16 @@ def read_images_and_labels(path):
 
 def read_slices(path):
 	'''
-	Reading the images and the labels.
+	Reading the slices of images and labels to perform 5-Fold Cross Validation
+
+	Parameters
+	-----------
+	path: string. Path contanining the images
 
 	Returns
 	-------
-	numpy.ndarray, numpy.ndarray
-		images, and labels
+	list of numpy.array, list of numpy.array
+		slices_of_images, and slices_of_labels
 	'''
 
 	metadata_slice1 = pd.read_csv(path+"sep1.csv")
@@ -146,7 +78,6 @@ def read_slices(path):
 
 	#data = np.zeros(shape=(smc_mask.sum(), 110, 110,3), dtype='float32')
 	list_of_images1 = metadata_slice1['Path']
-
 	list_of_images2 = metadata_slice2['Path']
 	list_of_images3 = metadata_slice3['Path']
 	list_of_images4 = metadata_slice4['Path']
@@ -184,11 +115,7 @@ def read_slices(path):
 		img5 = cv2.imread(str(path+list_of_images5[i]))
 		img_resize5=cv2.resize(img5,(110,110))
 		slice5.append(img5)
-	print(len(slice1))
-	print(len(slice2))
-	print(len(slice3))
-	print(len(slice4))
-	print(len(slice5))
+
 	slices_images.append(slice1)
 	slices_images.append(slice2)
 	slices_images.append(slice3)
@@ -251,6 +178,17 @@ def reorderRandomly(X,Y,list_of_images):
 	return (X,Y,list_of_images)
 
 def calculate_mean(values):
+	'''
+	Calculate the mean of a vector of values
+
+	Parameters
+	------------
+	values: List of values
+
+	Returns
+	------------
+	mean: float number, the mean of the values
+	'''
 	sum_mean = 0
 	for value in values:
 		sum_mean = sum_mean + float(value)

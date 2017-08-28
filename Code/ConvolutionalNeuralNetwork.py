@@ -31,27 +31,6 @@ from train import train_model, train_model_CV, train_model_CV_generator, train_m
 from train import train_LOO_pacient
 from utils import read_images_and_labels, read_slices
 
-"""
-Different parameters that allow to change variables of the whole network.
-
-@param: BATCH SIZE_TRAIN, is going to depend on the number of samples that we have
-@param: IMAGE_HEIGHT, height of the images
-@param: IMAGE_WIDTH, width of the images
-@param: IMAGE_WIDTH_ORIGINAL, original width of the SEM images
-@param: IMAGE_HEIGHT_ORIGINAL, original height of the SEM images
-@param: dimension_first_conv, how many dimensions do you want in the first convolutional layer of the network
-@param: dimension_second_conv, how many dimensions do you want in the second convolutional layer of the network
-@param: dimension_fc, how many neurons do you want in the fully conected layer
-
-"""
-
-BATCH_SIZE_TRAIN = 5
-NUM_EPOCHS = 150
-IMAGE_HEIGHT =29
-IMAGE_WIDTH = 29
-dimension_first_conv = 16
-dimension_second_conv = 32
-dimension_fc = 64
 
 '''
 Full path of the different directories for loading the dataset to the network, and also values of the dataset.
@@ -68,34 +47,22 @@ The order for the summation is: ad mci normal
 + 94
 + 96
 '''
-train_data_dir = './dataset_separation/train'
-test_data_dir = './dataset_separation/test'
+train_data_dir = './Slices/alltheSlices/train'
+test_data_dir = './Slices/alltheSlices/test'
 train_data_dir_small = './dataset_small/train'
 validation_data_dir_small = './dataset_small/validation'
 test_data_dir_small = './dataset_small/test'
-nb_train_samples = 122 + 190
-nb_validation_samples = 23 + 35
-nb_test_samples = 34 + 38
+nb_train_samples = 2197 + 2822
+nb_test_samples = 611 + 684
 nb_train_samples_small = 52 + 55
 nb_validation_samples_small = 6 + 25
 nb_test_samples_small = 8 + 10
-steps_per_epoch = nb_train_samples // 5
-'''
-For visualizing the model
+steps_per_epoch = nb_train_samples // 32
 
-@param: mode, the model we have declared above
-@param: to_file, name of the file is going to be saved to
 
-'''
-'''
-from keras.utils.visualize_util import plot
-print("Plotting the model")
-plot(model, to_file='model.png')
-'''
-print("augmentation configuration for training")
 # this is the augmentation configuration we will use for training
 train_datagen = ImageDataGenerator(horizontal_flip=True)
-print("augmentation configuration for testing")
+
 # this is the augmentation configuration we will use for testing:
 # only rescaling
 test_datagen = ImageDataGenerator()
@@ -103,8 +70,7 @@ test_datagen = ImageDataGenerator()
 train_generator = train_datagen.flow_from_directory(
 		train_data_dir,
 		target_size=(110, 110),
-		batch_size=5,
-		shuffle=True)
+		batch_size=32)
 '''
 validation_generator = test_datagen.flow_from_directory(
 		validation_data_dir,
@@ -114,14 +80,12 @@ validation_generator = test_datagen.flow_from_directory(
 test_generator = test_datagen.flow_from_directory(
 		test_data_dir,
 		target_size=(110, 110),
-		shuffle=True)
+		batch_size=32)
 
-print("DATA GENERATOR----------------------")
-print(train_generator.class_indices)
 
 # Reading images and labels
 #images1,labels,list_of_images1 = read_images_and_labels('dataset/')
-images2,labels2,names = read_images_and_labels('dataset_slice_45/')
+#images2,labels2,names = read_images_and_labels('dataset_slice_45/')
 #images3,labels3,list_of_images3 = read_images_and_labels('dataset_slice_65/')
 #slices_images,slices_labels = read_slices('dataset_slice_65/')
 #test_images,test_labels = read_images_and_labels('./dataset/test/ad/metadata.csv')
@@ -151,19 +115,6 @@ if __name__ == '__main__':
 	test = args.test
 	name_of_file = args.name_of_file
 
-
-'''
-# Trying to open the results file, if it doesn't exist create it
-try:
-	df_experiments = read_from_file(name_of_file)
-except:
-	# Creating the columns for the dataframe
-	columns = ['ID','BATCH_SIZE_TRAIN','STEPS_PER_EPOCH','NUM_EPOCHS','ACCURACY_TRAIN','VAL_ACC_TRAIN','LOSS_TRAIN','VAL_LOSS_TRAIN','VAL_ACC_TEST','VAL_LOSS_TEST']
-	# Creating the file for the dataframe
-	create_file(columns,name_of_file)
-	# Opening the experiments file
-	df_experiments = read_from_file(name_of_file)
-'''
 #creating the model
 model = create_model()
 if(restore == "true"):
@@ -177,9 +128,10 @@ if(train == "true"):
 	#Training the model defining all the parameters. The method could be found in train.py file.
 
 	print("Training the model...")
-	'''
-	train_model(model,BATCH_SIZE_TRAIN,NUM_EPOCHS,train_generator,steps_per_epoch)
+	
+	train_model(model,train_generator,steps_per_epoch)
 
+	'''
 	train_model_CV(slices_images,slices_labels)
 
 	train_model_CV_generator(images,labels,model)
@@ -187,8 +139,24 @@ if(train == "true"):
 	train_model_CV_MV(images1,images2,images3,labels,model)
 
 	train_LOO(images2,labels2)
-	'''
+	
 	train_LOO_pacient(images2,labels2,names)
+	'''
+	'''
+	i = 10
+	f = open("Results_CV.txt","w")
+	while i <= 100:
+		print("Reading the slices "+str(i))
+		path = "Slices/dataset_slice_"+str(i)+"/"
+		slices_images,slices_labels = read_slices(path)
+		slice_number = i
+		print("Training with slices"+str(i))
+		f.write("TRAINING MODEL WITH SLICE: "+str(i)+"\n")
+		train_model_CV(slices_images,slices_labels,slice_number,f)
+		f.write("END TRAINING MODEL WITH SLICE: "+str(i)+"\n")
+		i = i + 5
+	f.close()
+	'''
 if(test == "true"):
 	'''
 	for i in range(len(test_labels)):
@@ -205,6 +173,6 @@ if(test == "true"):
 	# Writting it to the dataframe
 	'''
 
-	test_loss = model.evaluate_generator(test_generator, steps=1)
+	test_loss = model.evaluate_generator(test_generator, steps=nb_test_samples//32)
 	print("Loss and accuracy in the test set: Loss %g, Accuracy %g"%(test_loss[0],test_loss[1]))
 	print(model.metrics_names)

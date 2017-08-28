@@ -26,8 +26,22 @@ import pandas as pd
 from model import create_model
 from utils import reorderRandomly,calculate_mean
 
-def train_model(model,BATCH_SIZE_TRAIN,NUM_EPOCHS,train_generator,steps_per_epoch):
+def train_model(model,train_generator,steps_per_epoch):
+	'''
+	Training model using a generator
 
+	Parameters
+	----------
+	model: keras builded model
+	BATCH_SIZE_TRAIN: integer batch size
+	NUM_EPOCHS: integer number of epochs for the training
+	train_generator: keras generator for training
+	steps_per_epoch: integer, lenght of the dataset divided by the batch size
+
+	Output
+	----------
+	saving the weights for the training
+	'''
 	#Using the early stopping technique to prevent overfitting
 	earlyStopping= keras.callbacks.EarlyStopping(monitor='val_loss', patience=3, verbose=1, mode='auto')
 	print("Fitting the model")
@@ -43,13 +57,18 @@ def train_model(model,BATCH_SIZE_TRAIN,NUM_EPOCHS,train_generator,steps_per_epoc
 	model.save_weights('weights.h5')
 
 
-def train_model_CV(slices_images,slices_labels):
+def train_model_CV(slices_images,slices_labels,slice_number,f):
 	'''
-	Training model using cross-validation
+	Training model using cross-validation passing the slices manually
 
 	Parameters
 	----------
+	slices_images: list of numpy.array
+	slices_labels: list of numpy.array
 
+	Output
+	----------
+	Write in a results file the mean of the accuracy in the test set
 	'''
 
 	#images,labels,list_of_images = reorderRandomly(images,labels,list_of_images)
@@ -66,19 +85,7 @@ def train_model_CV(slices_images,slices_labels):
 
 	print(slices_list_of_images)
 	'''
-	models = {}
-	histories = {}
 	values_acc = []
-	print(len(slices_labels[0]))
-	print(len(slices_labels[1]))
-	print(len(slices_labels[2]))
-	print(len(slices_labels[3]))
-	print(len(slices_labels[4]))
-	print(len(slices_images[0]))
-	print(len(slices_images[1]))
-	print(len(slices_images[2]))
-	print(len(slices_images[3]))
-	print(len(slices_images[4]))
 	for i in range(5):
 		model = create_model()
 		X_test = slices_images[i]
@@ -97,15 +104,13 @@ def train_model_CV(slices_images,slices_labels):
 		from keras.utils.np_utils import to_categorical
 		Y_train = to_categorical(Y_train)
 		Y_test = to_categorical(Y_test)
-		history = model.fit(X_train,Y_train,epochs=50,batch_size=5)
-		models['model'+str(i)] = model
+		history = model.fit(X_train,Y_train,epochs=70,batch_size=5,verbose=0)
 		test_loss = model.evaluate(X_test,Y_test)
 		print("Loss and accuracy in the test set: Loss %g, Accuracy %g"%(test_loss[0],test_loss[1]))
-		histories['test_acc'+str(i)] = test_loss
 		values_acc.append(test_loss[1])
 
 	mean = calculate_mean(values_acc)
-	print("The mean of all the test values is: %g"%mean)
+	f.write(("The mean of all the test values for the slice %g is: %g \n"%(slice_number,mean)))
 
 def train_model_CV_generator(images,labels,model,train_datagen):
 	'''
@@ -263,6 +268,7 @@ def train_LOO(images,labels):
 			labels[i] = 1
 	print("The lenght of images is "+str(len(images)))
 	for i in range(len(images)):
+		print("We are in the fold "+str(i))
 		model = create_model()
 		X_test = []
 		Y_test = []
@@ -285,7 +291,7 @@ def train_LOO(images,labels):
 		Y_test = to_categorical(Y_test,2)
 
 
-		history = model.fit(X_train,Y_train,epochs=70,batch_size=10)
+		history = model.fit(X_train,Y_train,epochs=70,batch_size=10,verbose=0)
 		test_loss = model.evaluate(X_test,Y_test)
 		print("Loss and accuracy in the test set: Loss %g, Accuracy %g"%(test_loss[0],test_loss[1]))
 		values_acc.append(test_loss[1])

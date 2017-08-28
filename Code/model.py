@@ -15,39 +15,19 @@ from keras.optimizers import SGD, Nadam
 import keras
 import PIL
 from keras.regularizers import l2
-"""
-Different parameters that allow to change variables of the whole network.
-
-@param: dimension_first_conv, how many dimensions do you want in the first convolutional layer of the network
-@param: dimension_second_conv, how many dimensions do you want in the second convolutional layer of the network
-@param: dimension_fc, how many neurons do you want in the fully conected layer
-
-"""
-
-dimension_first_conv = 8
-dimension_second_conv = 16
-dimension_fc = 32
-
-'''
-Creation of the architecture for the CNN.
-
-- One convolutional layer
-- Activation ReLU.
-- Max Pooling (2,2)
-- One convolutional layer
-- Activation ReLU
-- Max Pooling (2,2)
-- One convolutional layer
-- Activation Relu
-- Max Pooling (2,2)
-- Fully conected layer
-- Dropout layer
-- Output layer
-- Activation sigmoid
-
-'''
 
 def create_model():
+    '''
+    Method for building the keras model used in the experiments
+
+    Parameters
+    ------------
+    None
+    
+    Returns
+    ------------
+    model: keras model
+    '''
     print("Creating the model")
 
     model = Sequential()
