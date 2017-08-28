@@ -260,6 +260,18 @@ def train_model_CV_MV(images1,images2,images3,labels,model):
 	f.close()
 
 def train_LOO(images,labels):
+	'''
+	Training model using LOO validation using all the images
+
+	Parameters
+	----------
+	images: list of numpy.array
+	labels: list of numpy.array
+
+	Output
+	----------
+	Print the mean of the LOO validation
+	'''
 	values_acc = []
 	for i in range(len(labels)):
 		if labels[i] == "AD":
@@ -300,6 +312,18 @@ def train_LOO(images,labels):
 	print("The mean of all the test values is: %g"%mean)
 
 def train_LOO_pacient(images,labels,names):
+	'''
+	Training model using LOO validation using all the images
+
+	Parameters
+	----------
+	images: list of numpy.array. images of the pacients
+	labels: list of numpy.array. labels of the different images
+	names: list of numpy.array. name of the pacients
+	Output
+	----------
+	Print the mean of the LOO validation
+	'''
 	print("Training LOO with pacient name")
 	values_acc = []
 	already_tested = []
