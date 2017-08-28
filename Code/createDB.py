@@ -1,6 +1,13 @@
 #!/usr/bin/env python
 
 '''
+Francisco Carrillo Pérez (2017)
+carrilloperezfrancisco@gmail.com
+Universidad de Granada
+TFG
+'''
+
+'''
 Python script for converting nii images to jpg and save them in the different folders depening on their labels and test/train/evaluation
 '''
 

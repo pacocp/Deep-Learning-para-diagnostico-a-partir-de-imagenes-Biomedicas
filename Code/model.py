@@ -1,5 +1,12 @@
 #!/usr/bin/python3.6
 
+'''
+Francisco Carrillo Pérez (2017)
+carrilloperezfrancisco@gmail.com
+Universidad de Granada
+TFG
+'''
+
 import tensorflow as tf
 from tensorflow.python.framework import ops
 from tensorflow.python.framework import dtypes

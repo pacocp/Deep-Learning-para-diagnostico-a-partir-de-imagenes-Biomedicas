@@ -1,5 +1,12 @@
 #!/usr/bin/python3.6
 
+'''
+Francisco Carrillo Pérez (2017)
+carrilloperezfrancisco@gmail.com
+Universidad de Granada
+TFG
+'''
+
 # Libraries that I need
 import tensorflow as tf
 from tensorflow.python.framework import ops

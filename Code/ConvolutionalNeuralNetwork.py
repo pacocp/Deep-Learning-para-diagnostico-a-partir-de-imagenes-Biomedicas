@@ -1,5 +1,12 @@
 #!/usr/bin/python3.6
 
+'''
+Francisco Carrillo Pérez (2017)
+carrilloperezfrancisco@gmail.com
+Universidad de Granada
+TFG
+'''
+
 # For seeing the training tensorboard --logdir Graph
 
 # Libraries that I need

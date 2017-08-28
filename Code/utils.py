@@ -1,5 +1,12 @@
 #!/usr/bin/env python
 
+'''
+Francisco Carrillo Pérez (2017)
+carrilloperezfrancisco@gmail.com
+Universidad de Granada
+TFG
+'''
+
 import nibabel
 import numpy as np
 import pandas as pd
