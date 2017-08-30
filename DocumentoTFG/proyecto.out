@@ -1,5 +1,44 @@
 \BOOKMARK [0][-]{chapter*.8}{Introducci\363n}{}% 1
-\BOOKMARK [1][-]{section.0.1}{Motivaci\363n}{chapter*.8}% 2
-\BOOKMARK [1][-]{section.0.2}{Objetivos}{chapter*.8}% 3
-\BOOKMARK [1][-]{section.0.3}{Resumen y estructura del proyecto}{chapter*.8}% 4
-\BOOKMARK [0][-]{chapter*.10}{Bibliograf\355a}{}% 5
+\BOOKMARK [1][-]{section.1.1}{Motivaci\363n}{chapter*.8}% 2
+\BOOKMARK [1][-]{section.1.2}{Alzheimer}{chapter*.8}% 3
+\BOOKMARK [2][-]{subsection.1.2.1}{Definiciones}{section.1.2}% 4
+\BOOKMARK [1][-]{section.1.3}{Resumen y estructura del proyecto}{chapter*.8}% 5
+\BOOKMARK [0][-]{chapter*.9}{Objetivos}{}% 6
+\BOOKMARK [0][-]{chapter*.10}{Fundamento del proceso implementado}{}% 7
+\BOOKMARK [1][-]{section.3.1}{Redes Neuronales Artificiales}{chapter*.10}% 8
+\BOOKMARK [1][-]{section.3.2}{Convolutional Neural Networks}{chapter*.10}% 9
+\BOOKMARK [2][-]{subsection.3.2.1}{Convolutional Layer}{section.3.2}% 10
+\BOOKMARK [2][-]{subsection.3.2.2}{Pooling Layer}{section.3.2}% 11
+\BOOKMARK [2][-]{subsection.3.2.3}{Funciones de activaci\363n}{section.3.2}% 12
+\BOOKMARK [1][-]{section.3.3}{M\351todos de validaci\363n de modelos}{chapter*.10}% 13
+\BOOKMARK [2][-]{subsection.3.3.1}{K-Fold Cross-Validation}{section.3.3}% 14
+\BOOKMARK [2][-]{subsection.3.3.2}{Leave-one-out Cross-Validation}{section.3.3}% 15
+\BOOKMARK [0][-]{chapter*.11}{An\341lisis del diagn\363stico de la enfermedad de Alzheimer}{}% 16
+\BOOKMARK [1][-]{section.4.1}{An\341lisis de estudios m\351dicos}{chapter*.11}% 17
+\BOOKMARK [1][-]{section.4.2}{An\341lisis de estudios basados en computaci\363n}{chapter*.11}% 18
+\BOOKMARK [0][-]{chapter*.12}{An\341lisis y Desarrollo Experimental}{}% 19
+\BOOKMARK [1][-]{section.5.1}{M\341quinas en las que se han realizado los experimentos}{chapter*.12}% 20
+\BOOKMARK [1][-]{section.5.2}{Herramientas utilizadas}{chapter*.12}% 21
+\BOOKMARK [2][-]{subsection.5.2.1}{Librer\355as para trabajar con t\351cnicas de Deep Learning }{section.5.2}% 22
+\BOOKMARK [2][-]{subsection.5.2.2}{Librer\355a para trabajar con las im\341genes en formato NIFTI}{section.5.2}% 23
+\BOOKMARK [1][-]{section.5.3}{Procesamiento de las im\341genes NIFTI}{chapter*.12}% 24
+\BOOKMARK [1][-]{section.5.4}{Arquitectura de la CNN 3.2}{chapter*.12}% 25
+\BOOKMARK [1][-]{section.5.5}{Experimentos}{chapter*.12}% 26
+\BOOKMARK [2][-]{subsection.5.5.1}{Par\341metros comunes a todos los experimentos}{section.5.5}% 27
+\BOOKMARK [2][-]{subsection.5.5.2}{Experimentos previos a los tres experimentos finales}{section.5.5}% 28
+\BOOKMARK [2][-]{subsection.5.5.3}{Experimento 1: Leaving-one-out Cross Validation con todas las im\341genes}{section.5.5}% 29
+\BOOKMARK [2][-]{subsection.5.5.4}{Experimento 2: Leaving-one-out Cross Validation por paciente}{section.5.5}% 30
+\BOOKMARK [2][-]{subsection.5.5.5}{Experimento 3: 5-Fold Cross Validation para ver cu\341l es la mejor capa}{section.5.5}% 31
+\BOOKMARK [0][-]{chapter*.13}{Base de datos empleada}{}% 32
+\BOOKMARK [1][-]{section.6.1}{Post procesamiento}{chapter*.13}% 33
+\BOOKMARK [1][-]{section.6.2}{Software de visualizaci\363n de las im\341genes}{chapter*.13}% 34
+\BOOKMARK [1][-]{section.6.3}{Separaci\363n de las im\341genes por tipos}{chapter*.13}% 35
+\BOOKMARK [0][-]{chapter*.14}{Resultados}{}% 36
+\BOOKMARK [1][-]{section.7.1}{Resultados de experimentos previos a los tres experimentos finales}{chapter*.14}% 37
+\BOOKMARK [1][-]{section.7.2}{Resultados Experimento 1: Leaving-one-out Cross-Validation con todas las im\341genes}{chapter*.14}% 38
+\BOOKMARK [1][-]{section.7.3}{Resultados Experimento 2: Leaving-one-out Cross-Validation por paciente}{chapter*.14}% 39
+\BOOKMARK [1][-]{section.7.4}{Experimento 3: 5-Fold Cross Validation para ver cu\341l es la mejor capa}{chapter*.14}% 40
+\BOOKMARK [0][-]{chapter*.15}{Conclusiones y trabajos futuros}{}% 41
+\BOOKMARK [1][-]{section.8.1}{Conclusiones}{chapter*.15}% 42
+\BOOKMARK [1][-]{section.8.2}{Trabajos futuros}{chapter*.15}% 43
+\BOOKMARK [0][-]{section.8.2}{Bibliograf\355a}{}% 44

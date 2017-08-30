@@ -1,0 +1,27 @@
+\mychapter{8}{Conclusiones y trabajos futuros}
+
+En este capítulo se va a hablar de las conclusiones que se pueden observar a partir de los resultados obtenidos en el capítulo anterior y trabajos futuros que se desearían realizar a partir de lo ya concluido con este trabajo.\\
+
+\section{Conclusiones}
+
+Con este trabajo se intentaban dar respuesta a varias cuestiones. Una sería si \textbf{se pueden obtener buenos resultados usando técnicas de \textit{Deep Learning} para la clasificación de imágenes de pacientes con Alzheimer y pacientes sin esta enfermedad usando imágenes en 2D}, al contrario que en estudios previos donde se utilizaban las imágenes en 3D \cite{residualVGG}.\\
+
+Como se puedo observar en los experimentos previos \ref{experimentosprevios-resultados} y con el experimento 2 \ref{experimento2-resultados}, los resultados mejoran cuanto mayor es la base de datos que tenemos. Esto deja dilucidar que si aumentamos la base de datos cada vez con más imágenes se podrían obtener muy buenos resultados a la hora de la clasificación de pacientes que nos llegasen, pudiendo llegar a ser una herramienta de utilidad a la hora de que un médico pudiese hacer un diagnóstico a un paciente. Además, al tratarse de imágenes 2D en lugar de 3D, el tiempo para el entrenamiento y la capacidad de computación necesaria para el mismo o la predicción se reducen notablemente, dejando un camino abierto para que se pudiese realizar en un ordenador menos potente, lo cuál abriría más caminos para que se pudiese implantar un sistema así en un hospital.\\
+
+La segunda cuestión a la que se intentaba dar respuesta era que, una vez visto que la clasificación de los pacientes con imágenes 2D es viable y se pueden observar mejoras, \textbf{cuál es la capa del cerebro con la que se debería hacer esta clasificación}. Para ello se preparó el experimento 3, y se pueden ver sus resultados en \ref{experimento3-resultados}. Con estos en mano podemos observar que las mejores capas para la clasificación son la \textbf{40,55,50}. Aun así, son un poco optimistas, ya que vimos en el experimento 2 \ref{experimento2-resultados} que nuestro techo de \textit{Accuracy} utilizando un método de validación muy robusto como es el \textit{LOO CV} era de un \textbf{60'5655\%}. Con estos resultados también hemos podido afirmar que hay unas capas que funcionan mejor que otras.\\
+
+Además, como también hemos comprobado que hay una filtración de información entre distintas imágenes del mismo paciente con los resultados en \ref{experimentosprevios-resultados} y \ref{experimento1-resultados}, siempre tenemos que realizar una separación de los pacientes y esto se debería realizar también a la hora de que se implantase este procedimiento en un centro médico. \\
+
+Esto por esto que los resultados \textbf{más significativos y en los que se basa este trabajo} son los obtenidos en los experimentos 2 \ref{experimento2-resultados} y 3 \ref{experimento3-resultados}.\\
+
+Gracias a estos resultados podríamos afirmar que hay un futuro a la hora de realizar predicciones sin utilizar imágenes 3D, reduciendo los costes de computación y sin realizar un procesamiento de las imágenes muy costoso como se ha explicado en \ref{procesamiento-imagenes}, pero que se debe disponer de una mayor base de datos para que incrementemos la generalización de la red. Además, se ha confirmado que la estructura de la red utilizada en \cite{residualVGG} es útil también para la clasificación de imágenes 2D, obteniendo unos resultados aceptables en \ref{experimento2-resultados} y \ref{experimento3-resultados}.\\
+
+Lo que también se puede afirmar es que un mayor número de imágenes de pacientes da lugar a unos mejores resultados, como se pudo observar en los experimentos previos que se realizaron \ref{experimentosprevios-resultados}. Esto indicaría que si se pudiese normalizar la base de datos actual y aplicarle el post procesamiento \ref{postproces} al que fue sometida la base de datos utilizada para este trabajo, se podrían obtener unos muy buenos resultados a la hora de la clasificación de los pacientes.\\
+
+\section{Trabajos futuros}
+
+En cuanto a los trabajos futuros a partir del actual, el principal sería continuar por la línea de comprobar si cuantas más imágenes mejores resultados. Actualmente solo se ha utilizado un subgrupo dentro de la base de datos donde se había aplicado el post procesamiento explicado en \ref{postproces}. Como continuación, nos gustaría aplicar el post procesamiento a un número mayor de imágenes y obtener nuevos resultados.\\
+
+Además, después de haber respondido a la pregunta de que capas funcionan mejor que otras, lo siguiente sería responder porque unas capas funcionan mejores que otras. Este es otro estudio muy interesante el cuál sería recomendable realizar para darle una respuesta a estas preguntas.\\
+
+Como último, una continuación muy interesante una vez que se haya respondido a estas cuestiones y se hayan conseguido buenos resultados, sería la creación de una plataforma web donde un doctor pudiese subir las imágenes de un paciente y se produjese una predicción que el doctor pudiese tomar como primera consulta a la hora de diagnosticar al paciente. Esto sería realizable una vez que se hubiesen obtenido buenos resultados y estos tuviesen una robustez muy considerable.\\

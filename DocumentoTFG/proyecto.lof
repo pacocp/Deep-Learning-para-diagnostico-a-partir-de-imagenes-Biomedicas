@@ -1,2 +1,20 @@
 \select@language {spanish}
-\addvspace {10\p@ }
+\contentsline {figure}{\numberline {1.1}{\ignorespaces Caracterizaci\IeC {\'o}n de MCI que precede al diagn\IeC {\'o}stico de la enfermedad de Alzheimer}}{\es@scroman {xi}}{figure.1.1}
+\contentsline {figure}{\numberline {3.2}{\ignorespaces Ejemplo de la arquitectura de una CNN llamada LeNet por Yan Lecun \cite {Lecun98gradient-basedlearning}}}{\es@scroman {xviii}}{figure.3.2}
+\contentsline {figure}{\numberline {3.3}{\ignorespaces Ejemplo de filtros aprendidos por parte de Krizhevsky et al.}}{\es@scroman {xix}}{figure.3.3}
+\contentsline {figure}{\numberline {3.4}{\ignorespaces Ejemplo de capa de pool.}}{\es@scroman {xx}}{figure.3.4}
+\contentsline {figure}{\numberline {3.5}{\ignorespaces Ejemplo de la operaci\IeC {\'o}n maxpool.}}{\es@scroman {xx}}{figure.3.5}
+\contentsline {figure}{\numberline {3.6}{\ignorespaces Funci\IeC {\'o}n de activaci\IeC {\'o}n Softmax}}{\es@scroman {xxi}}{figure.3.6}
+\contentsline {figure}{\numberline {3.7}{\ignorespaces Funci\IeC {\'o}n de activaci\IeC {\'o}n ReLU}}{\es@scroman {xxii}}{figure.3.7}
+\contentsline {figure}{\numberline {3.8}{\ignorespaces Ejemplo de Cross Validation con K=4 \cite {k-fold}}}{\es@scroman {xxiii}}{figure.3.8}
+\contentsline {figure}{\numberline {3.9}{\ignorespaces Ejemplo de \textit {Leave one out Cross Validation} \cite {LOO}}}{\es@scroman {xxiv}}{figure.3.9}
+\contentsline {figure}{\numberline {4.10}{\ignorespaces Ejemplo de imagen obtenida por MRI}}{\es@scroman {xxvi}}{figure.4.10}
+\contentsline {figure}{\numberline {4.11}{\ignorespaces Ejemplo de imagen obtenida por CAT}}{\es@scroman {xxvi}}{figure.4.11}
+\contentsline {figure}{\numberline {4.12}{\ignorespaces Tomograf\IeC {\'\i }a del cerebro de un paciente con alzheimer mostrando p\IeC {\'e}rdida de la funci\IeC {\'o}n en el l\IeC {\'o}bulo temporal.}}{\es@scroman {xxvii}}{figure.4.12}
+\contentsline {figure}{\numberline {5.13}{\ignorespaces Inter\IeC {\'e}s de b\IeC {\'u}squeda de Frameworks de Deep Learning. Fuente: Fran\IeC {\c c}ois Chollet}}{\es@scroman {xxxiii}}{figure.5.13}
+\contentsline {figure}{\numberline {5.14}{\ignorespaces Stars a repositorios de Github. Fuente: Fran\IeC {\c c}ois Chollet}}{\es@scroman {xxxiii}}{figure.5.14}
+\contentsline {figure}{\numberline {5.15}{\ignorespaces Arquitectura utilizada basada en la arquitectura VGG \cite {SimonyanZ14a} del art\IeC {\'\i }culo \cite {residualVGG}}}{\es@scroman {xxxvii}}{figure.5.15}
+\contentsline {figure}{\numberline {6.16}{\ignorespaces Ejemplo de una imagen con el post-procesamiento relatado en \ref {postproces}}}{\es@scroman {xl}}{figure.6.16}
+\contentsline {figure}{\numberline {6.17}{\ignorespaces Ejemplo de visualizaci\IeC {\'o}n de una imagen con el software MRIcron \cite {mricron}}}{\es@scroman {xli}}{figure.6.17}
+\contentsline {figure}{\numberline {7.18}{\ignorespaces Rendimiento en los distintos experimentos, el orden es el mismo que en la tabla \ref {tablarendimientos}}}{\es@scroman {xliv}}{figure.7.18}
+\contentsline {figure}{\numberline {7.19}{\ignorespaces Rendimiento de las distintas capas}}{\es@scroman {xlv}}{figure.7.19}

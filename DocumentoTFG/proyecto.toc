@@ -1,6 +1,45 @@
 \select@language {spanish}
 \contentsline {chapter}{Introducci\IeC {\'o}n}{\es@scroman {vii}}{chapter*.8}
-\contentsline {section}{\numberline {0.1}Motivaci\IeC {\'o}n}{\es@scroman {vii}}{section.0.1}
-\contentsline {section}{\numberline {0.2}Objetivos}{\es@scroman {ix}}{section.0.2}
-\contentsline {section}{\numberline {0.3}Resumen y estructura del proyecto}{\es@scroman {ix}}{section.0.3}
-\contentsline {chapter}{Bibliograf\IeC {\'\i }a}{\es@scroman {xiii}}{chapter*.10}
+\contentsline {section}{\numberline {1.1}Motivaci\IeC {\'o}n}{\es@scroman {vii}}{section.1.1}
+\contentsline {section}{\numberline {1.2}Alzheimer}{\es@scroman {ix}}{section.1.2}
+\contentsline {subsection}{\numberline {1.2.1}Definiciones}{\es@scroman {x}}{subsection.1.2.1}
+\contentsline {section}{\numberline {1.3}Resumen y estructura del proyecto}{\es@scroman {xii}}{section.1.3}
+\contentsline {chapter}{Objetivos}{\es@scroman {xv}}{chapter*.9}
+\contentsline {chapter}{Fundamento del proceso implementado}{\es@scroman {xvii}}{chapter*.10}
+\contentsline {section}{\numberline {3.1}Redes Neuronales Artificiales}{\es@scroman {xvii}}{section.3.1}
+\contentsline {section}{\numberline {3.2}Convolutional Neural Networks}{\es@scroman {xvii}}{section.3.2}
+\contentsline {subsection}{\numberline {3.2.1}Convolutional Layer}{\es@scroman {xviii}}{subsection.3.2.1}
+\contentsline {subsection}{\numberline {3.2.2}Pooling Layer}{\es@scroman {xix}}{subsection.3.2.2}
+\contentsline {subsection}{\numberline {3.2.3}Funciones de activaci\IeC {\'o}n}{\es@scroman {xx}}{subsection.3.2.3}
+\contentsline {section}{\numberline {3.3}M\IeC {\'e}todos de validaci\IeC {\'o}n de modelos}{\es@scroman {xxii}}{section.3.3}
+\contentsline {subsection}{\numberline {3.3.1}K-Fold Cross-Validation}{\es@scroman {xxii}}{subsection.3.3.1}
+\contentsline {subsection}{\numberline {3.3.2}Leave-one-out Cross-Validation}{\es@scroman {xxiii}}{subsection.3.3.2}
+\contentsline {chapter}{An\IeC {\'a}lisis del diagn\IeC {\'o}stico de la enfermedad de Alzheimer}{\es@scroman {xxv}}{chapter*.11}
+\contentsline {section}{\numberline {4.1}An\IeC {\'a}lisis de estudios m\IeC {\'e}dicos}{\es@scroman {xxv}}{section.4.1}
+\contentsline {section}{\numberline {4.2}An\IeC {\'a}lisis de estudios basados en computaci\IeC {\'o}n}{\es@scroman {xxviii}}{section.4.2}
+\contentsline {chapter}{An\IeC {\'a}lisis y Desarrollo Experimental}{\es@scroman {xxxi}}{chapter*.12}
+\contentsline {section}{\numberline {5.1}M\IeC {\'a}quinas en las que se han realizado los experimentos}{\es@scroman {xxxi}}{section.5.1}
+\contentsline {section}{\numberline {5.2}Herramientas utilizadas}{\es@scroman {xxxi}}{section.5.2}
+\contentsline {subsection}{\numberline {5.2.1}Librer\IeC {\'\i }as para trabajar con t\IeC {\'e}cnicas de Deep Learning }{\es@scroman {xxxi}}{subsection.5.2.1}
+\contentsline {subsection}{\numberline {5.2.2}Librer\IeC {\'\i }a para trabajar con las im\IeC {\'a}genes en formato NIFTI}{\es@scroman {xxxiii}}{subsection.5.2.2}
+\contentsline {section}{\numberline {5.3}Procesamiento de las im\IeC {\'a}genes NIFTI}{\es@scroman {xxxiv}}{section.5.3}
+\contentsline {section}{\numberline {5.4}Arquitectura de la CNN \ref {CNN}}{\es@scroman {xxxiv}}{section.5.4}
+\contentsline {section}{\numberline {5.5}Experimentos}{\es@scroman {xxxv}}{section.5.5}
+\contentsline {subsection}{\numberline {5.5.1}Par\IeC {\'a}metros comunes a todos los experimentos}{\es@scroman {xxxv}}{subsection.5.5.1}
+\contentsline {subsection}{\numberline {5.5.2}Experimentos previos a los tres experimentos finales}{\es@scroman {xxxv}}{subsection.5.5.2}
+\contentsline {subsection}{\numberline {5.5.3}Experimento 1: Leaving-one-out Cross Validation con todas las im\IeC {\'a}genes}{\es@scroman {xxxvi}}{subsection.5.5.3}
+\contentsline {subsection}{\numberline {5.5.4}Experimento 2: Leaving-one-out Cross Validation por paciente}{\es@scroman {xxxviii}}{subsection.5.5.4}
+\contentsline {subsection}{\numberline {5.5.5}Experimento 3: 5-Fold Cross Validation para ver cu\IeC {\'a}l es la mejor capa}{\es@scroman {xxxviii}}{subsection.5.5.5}
+\contentsline {chapter}{Base de datos empleada}{\es@scroman {xxxix}}{chapter*.13}
+\contentsline {section}{\numberline {6.1}Post procesamiento}{\es@scroman {xxxix}}{section.6.1}
+\contentsline {section}{\numberline {6.2}Software de visualizaci\IeC {\'o}n de las im\IeC {\'a}genes}{\es@scroman {xl}}{section.6.2}
+\contentsline {section}{\numberline {6.3}Separaci\IeC {\'o}n de las im\IeC {\'a}genes por tipos}{\es@scroman {xli}}{section.6.3}
+\contentsline {chapter}{Resultados}{\es@scroman {xliii}}{chapter*.14}
+\contentsline {section}{\numberline {7.1}Resultados de experimentos previos a los tres experimentos finales}{\es@scroman {xliii}}{section.7.1}
+\contentsline {section}{\numberline {7.2}Resultados Experimento 1: Leaving-one-out Cross-Validation con todas las im\IeC {\'a}genes}{\es@scroman {xliv}}{section.7.2}
+\contentsline {section}{\numberline {7.3}Resultados Experimento 2: Leaving-one-out Cross-Validation por paciente}{\es@scroman {xlv}}{section.7.3}
+\contentsline {section}{\numberline {7.4}Experimento 3: 5-Fold Cross Validation para ver cu\IeC {\'a}l es la mejor capa}{\es@scroman {xlv}}{section.7.4}
+\contentsline {chapter}{Conclusiones y trabajos futuros}{\es@scroman {xlvii}}{chapter*.15}
+\contentsline {section}{\numberline {8.1}Conclusiones}{\es@scroman {xlvii}}{section.8.1}
+\contentsline {section}{\numberline {8.2}Trabajos futuros}{\es@scroman {xlviii}}{section.8.2}
+\contentsline {chapter}{Bibliograf\IeC {\'\i }a}{\es@scroman {xlix}}{section.8.2}

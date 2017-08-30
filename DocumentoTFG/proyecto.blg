@@ -1,75 +1,51 @@
-This is BibTeX, Version 0.99d (TeX Live 2015/Debian)
-Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+This is BibTeX, Version 0.99d (TeX Live 2017)
+Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
 The top-level auxiliary file: proyecto.aux
 The style file: ieeetr.bst
-Illegal, another \bibdata command---line 52 of file proyecto.aux
- : \bibdata
- :         {bibliografia/bibliografia.bib}
-I'm skipping whatever remains of this command
-Illegal, another \bibstyle command---line 59 of file proyecto.aux
- : \bibstyle
- :          {ieeetr}
-I'm skipping whatever remains of this command
 Database file #1: bibliografia/bibliografia.bib.bib
-I was expecting a `,' or a `}'---line 47 of file bibliografia/bibliografia.bib.bib
- :  
- :  title="Prion protein and Alzheimer disease",
-(Error may have been on previous line)
-I'm skipping whatever remains of this entry
-I was expecting a `,' or a `}'---line 59 of file bibliografia/bibliografia.bib.bib
- :  
- :  title="Incidence and subtypes of dementia in three elderly populations of central Spain"
-(Error may have been on previous line)
-I'm skipping whatever remains of this entry
-Too many commas in name 1 of "F.Bermejo Pareja,J. Benito-León,S.Vega,M.J. Mendrano,G.C. Román" for entry populationofalzheimerinSpain
-while executing---line 969 of file ieeetr.bst
-Too many commas in name 1 of "F.Bermejo Pareja,J. Benito-León,S.Vega,M.J. Mendrano,G.C. Román" for entry populationofalzheimerinSpain
-while executing---line 969 of file ieeetr.bst
-Warning--empty title in populationofalzheimerinSpain
-Warning--empty journal in populationofalzheimerinSpain
-Warning--empty year in populationofalzheimerinSpain
-Warning--empty title in 4
-Warning--empty journal in 4
-Warning--empty year in 4
-You've used 6 entries,
+Warning--entry type for "jaramillo" isn't style-file defined
+--line 310 of file bibliografia/bibliografia.bib.bib
+Warning--empty journal in LOO
+Warning--empty journal in Lee:2009:CMF:1697406.1697471
+You've used 29 entries,
             1876 wiz_defined-function locations,
-            498 strings with 4174 characters,
-and the built_in function-call counts, 741 in all, are:
-= -- 61
-> -- 15
+            649 strings with 9164 characters,
+and the built_in function-call counts, 6582 in all, are:
+= -- 618
+> -- 308
 < -- 0
-+ -- 9
-- -- 3
-* -- 36
-:= -- 102
-add.period$ -- 7
-call.type$ -- 6
-change.case$ -- 4
++ -- 116
+- -- 87
+* -- 467
+:= -- 931
+add.period$ -- 40
+call.type$ -- 29
+change.case$ -- 29
 chr.to.int$ -- 0
-cite$ -- 12
-duplicate$ -- 39
-empty$ -- 106
-format.name$ -- 3
-if$ -- 182
+cite$ -- 31
+duplicate$ -- 294
+empty$ -- 648
+format.name$ -- 87
+if$ -- 1608
 int.to.chr$ -- 0
-int.to.str$ -- 6
-missing$ -- 3
-newline$ -- 24
-num.names$ -- 3
-pop$ -- 44
+int.to.str$ -- 29
+missing$ -- 18
+newline$ -- 101
+num.names$ -- 19
+pop$ -- 133
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 14
+skip$ -- 202
 stack$ -- 0
-substring$ -- 0
-swap$ -- 1
+substring$ -- 339
+swap$ -- 104
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 0
-warning$ -- 6
-while$ -- 3
-width$ -- 7
-write$ -- 44
-(There were 6 error messages)
+warning$ -- 2
+while$ -- 48
+width$ -- 31
+write$ -- 262
+(There were 3 warnings)

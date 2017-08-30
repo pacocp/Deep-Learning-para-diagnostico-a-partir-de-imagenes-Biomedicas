@@ -10,6 +10,7 @@
 
 \decimalpoint
 \usepackage{dcolumn}
+\usepackage{float}
 \newcolumntype{.}{D{.}{\esperiod}{-1}}
 \makeatletter
 \addto\shorthandsspanish{\let\esperiod\es@period@code}
@@ -22,7 +23,6 @@
 \usepackage{fancyhdr}
 \usepackage{graphicx}
 \usepackage{afterpage}
-
 \usepackage{longtable}
 
 \usepackage[pdfborder={000}]{hyperref} %referencia
@@ -34,7 +34,7 @@
 \newcommand{\myDegree}{Grado en Ingeniería Informática\xspace}
 \newcommand{\myName}{Francisco Carrillo Pérez \xspace}
 \newcommand{\myProf}{Luis Javier Herrera Maldonado\xspace}
-%\newcommand{\myOtherProf}{Nombre Apllido1 Apellido2 (tutor2)\xspace}
+\newcommand{\myOtherProf}{Alberto Guillén Perales (tutor2)\xspace}
 %\newcommand{\mySupervisor}{Put name here\xspace}
 \newcommand{\myFaculty}{Escuela Técnica Superior de Ingenierías Informática y de
 Telecomunicación\xspace}
@@ -77,7 +77,7 @@ Telecomunicación\xspace}
 \fancyhf{}
 \fancyhead[LO]{\leftmark}
 \fancyhead[RE]{\rightmark}
-\fancyhead[RO,LE]{\textbf{\thepage}}
+\fancyhead[LE]{\textbf{\thepage}}
 \renewcommand{\chaptermark}[1]{\markboth{\textbf{#1}}{}}
 \renewcommand{\sectionmark}[1]{\markright{\textbf{\thesection. #1}}}
 
@@ -150,7 +150,13 @@ Telecomunicación\xspace}
 
 \newcommand{\bigrule}{\titlerule[0.5mm]}
 
-
+% for my chapter sections
+\newcommand{\mychapter}[2]{
+	\setcounter{chapter}{#1}
+	\setcounter{section}{0}
+	\chapter*{#2}
+	\addcontentsline{toc}{chapter}{#2}
+}
 %Para conseguir que en las páginas en blanco no ponga cabecerass
 \makeatletter
 \def\clearpage{%
@@ -168,7 +174,7 @@ Telecomunicación\xspace}
   \penalty -\@Mi
 }
 \makeatother
-
+\renewcommand{\thepage}{\arabic{page}}% Arabic numerals for page counter
 \usepackage{pdfpages}
 \begin{document}
 \input{portada/portada}
@@ -182,8 +188,13 @@ Telecomunicación\xspace}
 %\setlength{\parskip}{5pt}
 
 \input{capitulos/01_Introduccion}
-
-%\input{capitulos/02_EspecificacionRequisitos}
+\input{capitulos/02_Objetivos}
+\input{capitulos/03_Fundamentodelprocesoimplementado}
+\input{capitulos/04_Stateoftheart}
+\input{capitulos/05_AnalisisyDesarrolloExperimental}
+\input{capitulos/06_BasedeDatos}
+\input{capitulos/07_Resultados}
+\input{capitulos/08_Conclusiones}
 %
 %\input{capitulos/03_Planificacion}
 %
@@ -201,8 +212,7 @@ Telecomunicación\xspace}
 %
 %
 %\nocite{*}
-\bibliography{bibliografia/bibliografia.bib}
-\bibliographystyle{ieeetr}
+
 \addcontentsline{toc}{chapter}{Bibliografía}
 %\bibliographystyle{miunsrturl}
 
@@ -213,7 +223,8 @@ Telecomunicación\xspace}
 %\input{glosario/entradas_glosario}
 % \addcontentsline{toc}{chapter}{Glosario}
 % \printglossary
-\chapter*{}
 \thispagestyle{empty}
 
+\bibliography{bibliografia/bibliografia.bib}
+\bibliographystyle{ieeetr} % hay varias formas de citar
 \end{document}
