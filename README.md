@@ -16,7 +16,8 @@ Alzheimer disease is one of the diseases that affect the most to the elderly in 
 
 ## Autor
 
-Francisco Carrillo Péres
+Francisco Carrillo Pérez
 
 < franciscocp@correo.ugr.es >
+
 < carrilloperezfrancisco@gmail.com >
