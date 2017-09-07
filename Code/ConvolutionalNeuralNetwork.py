@@ -92,7 +92,7 @@ test_generator = test_datagen.flow_from_directory(
 
 # Reading images and labels
 #images1,labels,list_of_images1 = read_images_and_labels('dataset/')
-#images2,labels2,names = read_images_and_labels('dataset_slice_45/')
+images2,labels2,names = read_images_and_labels('Slices/dataset_slice_45')
 #images3,labels3,list_of_images3 = read_images_and_labels('dataset_slice_65/')
 #slices_images,slices_labels = read_slices('dataset_slice_65/')
 #test_images,test_labels = read_images_and_labels('./dataset/test/ad/metadata.csv')
