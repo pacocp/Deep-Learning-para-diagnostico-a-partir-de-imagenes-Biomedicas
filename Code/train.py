@@ -320,7 +320,7 @@ def train_LOO(images,labels):
 
 def train_LOO_pacient(images,labels,names):
 	'''
-	Training model using LOO validation using all the images
+	Training model using LOO validation by pacient
 
 	Parameters
 	----------
