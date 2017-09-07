@@ -1,6 +1,6 @@
 # Deep Learning para diagnóstico a partir de imágenes Biomédicas
 
-Trabajo Fin de Grado en Ingeniería Informática realizado por Francisco Carrillo Pérez. La totalidad de la documentación se encuentra en español.
+Trabajo Fin de Grado en Ingeniería Informática (2017) realizado por Francisco Carrillo Pérez. La totalidad de la documentación se encuentra en español.
 
 ## Resumen
 
@@ -14,3 +14,9 @@ La enfermedad de Alzheimer es una de las enfermedades que más afecta a paciente
 
 Alzheimer disease is one of the diseases that affect the most to the elderly in the whole world. The cure is unknown, so an early diagnosis is very important for making improves in the pacient life. The problem is that the diagnosis of the disease in an early stage is really difficult, adding the fact that it could be difficult to distinguish in respect to other damages of age. With the new development of Deep Learning techniques in the area of Computer Vision and Image Classification, the use of this techniques for pacient classification could be a usefull help for when deciding if a pacient is developing the disease, helping to treat it in an early stage. With this TFG, we are trying to anwer if witj this techniques we can make a good classification of 2D brain images of pacientes and if so, which are the best slices of the brain for doing this classification.
 
+## Autor
+
+Francisco Carrillo Péres
+
+< franciscocp@correo.ugr.es >
+< carrilloperezfrancisco@gmail.com >
